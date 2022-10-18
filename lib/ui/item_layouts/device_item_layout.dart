@@ -30,7 +30,7 @@ class DeviceItemLayout extends StatelessWidget {
               Positioned(
                 top: 0,
                   right: 0,
-                  child: Text(5.displayDate())),
+                  child: Text(deviceModel.lastSeen.displayDate())),
             ],
           ),
         ),
