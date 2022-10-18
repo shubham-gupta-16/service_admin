@@ -13,11 +13,13 @@ class DevicePage extends StatefulWidget {
 }
 
 class _DevicePageState extends State<DevicePage> {
-  late DeviceDataConnection dataConnection;
+  late DeviceDataConnection _dataConnection;
+  late TextEditingController _textEditingController;
 
   @override
   void initState() {
-    dataConnection = locator();
+    _dataConnection = locator();
+    _textEditingController = TextEditingController();
     super.initState();
   }
 
@@ -25,7 +27,7 @@ class _DevicePageState extends State<DevicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(dataConnection.deviceModel.name),
+        title: Text(_dataConnection.deviceModel.name),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -60,6 +62,7 @@ class _DevicePageState extends State<DevicePage> {
           children: [
             Expanded(
               child: TextField(
+                controller: _textEditingController,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                   border: OutlineInputBorder(
@@ -73,7 +76,9 @@ class _DevicePageState extends State<DevicePage> {
               ),
             ),
             const SizedBox(width: 8,),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.send))
+            IconButton(onPressed: () {
+              _dataConnection.runCommand(_textEditingController.text.trim());
+            }, icon: const Icon(Icons.send))
           ],
         ),
       ),

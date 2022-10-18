@@ -19,6 +19,10 @@ class DeviceDataConnection {
   void setDevice(DeviceModel deviceModel){
     _deviceModel = deviceModel;
   }
+  
+  void runCommand(String command) {
+    _dataRef.child(DbRef.terminal).child(DbRef.cmd).push().set(command);
+  }
 
 
 
