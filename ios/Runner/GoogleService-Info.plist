@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>990124921477-curp3aj5s5cke78a7266mouea61s1hp3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.990124921477-curp3aj5s5cke78a7266mouea61s1hp3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>990124921477-iasokshmg06jh2hlecfqvnvlbdrl65sr.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAB0WZnPDNMnPwCgUtYn9MMDCnCoXBKb-M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>990124921477</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.serviceaccess.serviceAdmin</string>
+	<key>PROJECT_ID</key>
+	<string>acoder-shopping</string>
+	<key>STORAGE_BUCKET</key>
+	<string>acoder-shopping.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:990124921477:ios:65a032550a769e0f75cfec</string>
+	<key>DATABASE_URL</key>
+	<string>https://acoder-shopping.firebaseio.com</string>
+</dict>
+</plist>
