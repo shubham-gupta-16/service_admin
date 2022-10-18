@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
+import 'package:service_admin/ui/pages/features/event_log_page.dart';
+import 'package:service_admin/utils/utils.dart';
 
 import '../../api/di/provider_di.dart';
 
@@ -33,7 +35,9 @@ class _DevicePageState extends State<DevicePage> {
           children: [
             ElevatedButton(
               child: const Text('Event Logs'),
-              onPressed: () {},
+              onPressed: () {
+                context.navigatePush(const EventLogPage());
+              },
             ),
             ElevatedButton(
               child: const Text('Messages'),
