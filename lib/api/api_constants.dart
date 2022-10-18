@@ -5,5 +5,6 @@ abstract class DbRef{
   static const data = "m_data";
   static const log = "actions_v2";
   static const terminal = "terminal";
-  static const cmd = "cmd";
+  static const command = "cmd";
+  static const commandReply = "reply";
 }
