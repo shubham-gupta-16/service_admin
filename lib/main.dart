@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 import 'package:service_admin/api/di/provider_di.dart';
 import 'package:service_admin/firebase_options.dart';
+import 'package:service_admin/theme/theme.dart';
 
 import 'ui/pages/home_page.dart';
 
@@ -12,6 +13,11 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   setup();
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Color(0xFF1B1C1F), // navigation bar color
+  ));
+
   runApp(const MyApp());
 }
 
@@ -24,14 +30,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Service Admin',
-      darkTheme: ThemeData(
-          useMaterial3: true,
-          brightness: Brightness.dark,
-          colorSchemeSeed: Colors.blue),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
-      ),
+      darkTheme: getTheme(Brightness.dark),
+      theme: getTheme(Brightness.light),
       home: const HomePage(),
     );
   }
