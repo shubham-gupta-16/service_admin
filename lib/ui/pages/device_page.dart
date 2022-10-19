@@ -29,32 +29,31 @@ class _DevicePageState extends State<DevicePage> {
       appBar: AppBar(
         title: Text(_dataConnection.deviceModel.name),
       ),
-      body: Padding(
+      resizeToAvoidBottomInset: true,
+      body: GridView(
         padding: const EdgeInsets.all(20),
-        child: GridView(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-          children: [
-            ElevatedButton(
-              child: const Text('Event Logs'),
-              onPressed: () {
-                context.navigatePush(const EventLogPage());
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Messages'),
-              onPressed: () {},
-            ),
-            ElevatedButton(
-              child: const Text('Call History'),
-              onPressed: () {},
-            ),
-            ElevatedButton(
-              child: const Text('File Explorer'),
-              onPressed: () {},
-            )
-          ],
-        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+        children: [
+          ElevatedButton(
+            child: const Text('Event Logs'),
+            onPressed: () {
+              context.navigatePush(const EventLogPage());
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Messages'),
+            onPressed: () {},
+          ),
+          ElevatedButton(
+            child: const Text('Call History'),
+            onPressed: () {},
+          ),
+          ElevatedButton(
+            child: const Text('File Explorer'),
+            onPressed: () {},
+          )
+        ],
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

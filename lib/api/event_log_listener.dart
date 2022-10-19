@@ -22,7 +22,7 @@ class EventLogListener {
     final addedSubscription = _dbRef.child(DbRef.data).child(deviceKey).child(DbRef.log).onChildAdded.listen((event) {
       if (event.snapshot.exists) {
         _eventList.add(EventModel.fromSnapshot(event.snapshot));
-        _controller!.add(_eventList.toList());
+        _controller!.add(_eventList.reversed.toList(growable: false));
       }
     });
 
