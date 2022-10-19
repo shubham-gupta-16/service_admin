@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/ui/widgets/auth_text_field.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
+import 'package:service_admin/utils/utils.dart';
 
-import '../../api/di/provider_di.dart';
+import '../../api/di/locator.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -112,10 +113,13 @@ class __LoginFromState extends State<_LoginFrom> {
               text: 'Login',
               width: double.infinity,
               height: 50,
-              onPressed: () {
+              onPressed: () async {
                 print('login pressed');
                 if (_formKey.currentState!.validate()) {
-                  final code = widget.callback(emailController.text.trim(), passwordController.text.trim());
+                  context.showLoaderDialog();
+                  final code = await widget.callback(emailController.text.trim(), passwordController.text.trim());
+                  if (!mounted) return;
+                  context.navigatePop();
                 //  todo code check and ui
                 }
               }),

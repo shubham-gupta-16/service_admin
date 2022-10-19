@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
-import 'package:service_admin/api/di/provider_di.dart';
+import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/api/event_log_listener.dart';
 import 'package:service_admin/ui/item_layouts/event_item_layout.dart';
 

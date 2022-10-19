@@ -36,4 +36,25 @@ extension Context on BuildContext {
   void navigatePushReplace(Widget page){
     Navigator.pushReplacement(this, MaterialPageRoute(builder: (context)=>page));
   }
+
+  void navigatePop(){
+    Navigator.pop(this);
+  }
+
+  showLoaderDialog(){
+    AlertDialog alert=AlertDialog(
+      content: Row(
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(width: 7,),
+          Text("Loading..." ),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:this,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
 }
