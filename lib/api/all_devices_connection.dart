@@ -1,11 +1,9 @@
 
 
 import 'dart:async';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:service_admin/api/auth.dart';
 import 'api_constants.dart';
-import 'di/locator.dart';
 import 'models/device_model.dart';
 
 class AllDevicesConnection {
@@ -23,8 +21,7 @@ class AllDevicesConnection {
   Stream<List<DeviceModel>> stream() async* {
     _deviceList.clear();
     _onDeviceAddedController = StreamController();
-    //todo replace uid
-    final addedSubscription = _deviceRef.orderByChild(DbRef.admin).equalTo("uid").onChildAdded.listen((event) {
+    final addedSubscription = _deviceRef.orderByChild(DbRef.admin).equalTo(auth.requireUid).onChildAdded.listen((event) {
       if (event.snapshot.exists) {
         _deviceList.add(DeviceModel.fromSnapshot(event.snapshot));
         _onDeviceAddedController!.add(_deviceList.toList());
@@ -32,10 +29,11 @@ class AllDevicesConnection {
       }
     });
 
-    final changedSubscription = _deviceRef.orderByChild(DbRef.admin).equalTo("uid").onChildChanged.listen((event) {
+    final changedSubscription = _deviceRef.orderByChild(DbRef.admin).equalTo(auth.requireUid).onChildChanged.listen((event) {
       if (event.snapshot.exists) {
-        final i = _deviceList.indexWhere((element) => element.deviceKey == event.snapshot.key);
-        _deviceList[i] = DeviceModel.fromSnapshot(event.snapshot);
+        final model = DeviceModel.fromSnapshot(event.snapshot);
+        final i = _deviceList.indexWhere((element) => element.deviceKey == model.deviceKey);
+        _deviceList[i] = model;
         _onDeviceAddedController!.add(_deviceList.toList());
         print('got i2t');
       }
