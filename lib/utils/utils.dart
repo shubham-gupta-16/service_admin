@@ -33,4 +33,7 @@ extension Context on BuildContext {
   void navigatePush(Widget page){
     Navigator.push(this, MaterialPageRoute(builder: (context)=>page));
   }
+  void navigatePushReplace(Widget page){
+    Navigator.pushReplacement(this, MaterialPageRoute(builder: (context)=>page));
+  }
 }

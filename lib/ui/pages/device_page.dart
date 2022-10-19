@@ -4,6 +4,7 @@ import 'package:service_admin/ui/pages/features/event_log_page.dart';
 import 'package:service_admin/utils/utils.dart';
 
 import '../../api/di/provider_di.dart';
+import '../widgets/text_elevated_button.dart';
 
 class DevicePage extends StatefulWidget {
   const DevicePage({Key? key}) : super(key: key);
@@ -34,28 +35,31 @@ class _DevicePageState extends State<DevicePage> {
         children: [
           Expanded(
             child: GridView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
               children: [
-                ElevatedButton(
-                  child: const Text('Event Logs'),
+                TextElevatedButton(
+                  text: 'Event Logs',
                   onPressed: () {
                     context.navigatePush(const EventLogPage());
                   },
                 ),
-                ElevatedButton(
-                  child: const Text('Messages'),
-                  onPressed: () {},
+                TextElevatedButton(
+                  text: 'Messages',
+                  onPressed: () {
+                  },
                 ),
-                ElevatedButton(
-                  child: const Text('Call History'),
-                  onPressed: () {},
+                TextElevatedButton(
+                  text: 'Call History',
+                  onPressed: () {
+                  },
                 ),
-                ElevatedButton(
-                  child: const Text('File Explorer'),
-                  onPressed: () {},
-                )
+                TextElevatedButton(
+                  text: 'File Explorer',
+                  onPressed: () {
+                  },
+                ),
               ],
             ),
           ),

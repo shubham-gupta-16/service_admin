@@ -6,6 +6,7 @@ import 'package:service_admin/firebase_options.dart';
 import 'package:service_admin/theme/theme.dart';
 
 import 'ui/pages/home_page.dart';
+import 'ui/pages/splash_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,26 +33,26 @@ class MyApp extends StatelessWidget {
       title: 'Service Admin',
       darkTheme: getTheme(Brightness.dark),
       theme: getTheme(Brightness.light),
-      home: const HomePage(),
+      home: const SplashPage(),
     );
   }
 }
 
-class SplashPage extends StatelessWidget {
-  const SplashPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          child: const Text('Open'),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const HomePage()));
-          },
-        ),
-      ),
-    );
-  }
-}
+// class SplashPage extends StatelessWidget {
+//   const SplashPage({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: ElevatedButton(
+//           child: const Text('Open'),
+//           onPressed: () {
+//             Navigator.push(context,
+//                 MaterialPageRoute(builder: (context) => const HomePage()));
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }
