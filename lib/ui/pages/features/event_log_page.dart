@@ -47,7 +47,7 @@ class _EventLogPageState extends State<EventLogPage> {
             child: ListView.builder(
               reverse: true,
               itemBuilder: (context, index) {
-                final eventModel = snapshot.requireData[index];
+                final eventModel = snapshot.requireData.reversed.toList(growable: false)[index];
                 return EventItemLayout(
                   eventModel: eventModel,
                   onPressed: (){},

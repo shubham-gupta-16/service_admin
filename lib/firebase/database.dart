@@ -37,22 +37,23 @@ class ChildEventListener {
 extension FirebaseQuery on Query {
   StreamController<List<T>> stream<T>(
       {required T Function(DataSnapshot snapshot) converter,
-      required bool finder(T p1, T p2)}) {
+      bool Function(T p1, T p2)? finder}) {
     final streamController = StreamController<List<T>>();
     final List<T> list = [];
     final ca = onChildEventListener(ChildEventListener(
       onChildAdded: (snapshot) {
         list.add(converter(snapshot));
+        print('got');
         streamController.add(list);
       },
-      onChildChanged: (snapshot) {
+      onChildChanged: (finder !=null) ? (snapshot) {
         final model = converter(snapshot);
         final i = list.indexWhere((element) => finder(element, model));
         if (i >= 0){
           list[i] = model;
           streamController.add(list);
         }
-      },
+      } : null,
     ));
     streamController.onCancel = () {
       ca.cancel();
