@@ -36,6 +36,5 @@ class EventLogListener {
 
   void close(){
     _controller?.close();
-
   }
 }

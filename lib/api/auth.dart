@@ -57,5 +57,11 @@ class Auth {
       return AuthCode.error;
     }
   }
+
+  void logout() {
+    auth.signOut();
+  }
+
   String _toEmail(String username)=> "$username@service.access";
+
 }

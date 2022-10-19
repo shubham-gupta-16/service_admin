@@ -11,6 +11,6 @@ final locator = GetIt.instance;
 void initializeDependencyInjection() {
   locator.registerSingleton(DbRef.getFirebaseRef());
   locator.registerSingleton(Auth());
-  locator.registerSingleton(AllDevicesConnection(locator()));
+  locator.registerSingleton(AllDevicesConnection(locator(), locator()));
   locator.registerSingleton(DeviceDataConnection(locator()));
 }

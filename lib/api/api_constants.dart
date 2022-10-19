@@ -10,7 +10,7 @@ abstract class DbRef{
   static const terminal = "terminal";
   static const command = "cmd";
   static const commandReply = "reply";
-
+  static const admin = "admin";
 
   static DatabaseReference getFirebaseRef() => FirebaseDatabase.instance.ref(_ref);
 

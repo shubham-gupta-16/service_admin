@@ -3,13 +3,16 @@
 import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:service_admin/api/auth.dart';
 import 'api_constants.dart';
+import 'di/locator.dart';
 import 'models/device_model.dart';
 
 class AllDevicesConnection {
 
   final DatabaseReference _dbRef;
-  AllDevicesConnection(this._dbRef);
+  final Auth auth;
+  AllDevicesConnection(this._dbRef, this.auth);
 
   DatabaseReference get _deviceRef => _dbRef.child(DbRef.devices);
 
@@ -20,7 +23,8 @@ class AllDevicesConnection {
   Stream<List<DeviceModel>> stream() async* {
     _deviceList.clear();
     _onDeviceAddedController = StreamController();
-    final addedSubscription = _deviceRef.onChildAdded.listen((event) {
+    //todo replace uid
+    final addedSubscription = _deviceRef.orderByChild(DbRef.admin).equalTo("uid").onChildAdded.listen((event) {
       if (event.snapshot.exists) {
         _deviceList.add(DeviceModel.fromSnapshot(event.snapshot));
         _onDeviceAddedController!.add(_deviceList.toList());
@@ -28,7 +32,7 @@ class AllDevicesConnection {
       }
     });
 
-    final changedSubscription = _deviceRef.onChildChanged.listen((event) {
+    final changedSubscription = _deviceRef.orderByChild(DbRef.admin).equalTo("uid").onChildChanged.listen((event) {
       if (event.snapshot.exists) {
         final i = _deviceList.indexWhere((element) => element.deviceKey == event.snapshot.key);
         _deviceList[i] = DeviceModel.fromSnapshot(event.snapshot);

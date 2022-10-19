@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/auth.dart';
+import 'package:service_admin/ui/pages/home_page.dart';
 import 'package:service_admin/ui/widgets/auth_text_field.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 import 'package:service_admin/utils/utils.dart';
@@ -120,7 +121,11 @@ class __LoginFromState extends State<_LoginFrom> {
                   final code = await widget.callback(emailController.text.trim(), passwordController.text.trim());
                   if (!mounted) return;
                   context.navigatePop();
-                //  todo code check and ui
+                  if(code == AuthCode.success){
+                    context.navigatePushReplace(const HomePage());
+                  } else {
+                    print(code.name);
+                  }
                 }
               }),
 

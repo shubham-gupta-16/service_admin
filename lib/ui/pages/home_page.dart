@@ -5,10 +5,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/all_devices_connection.dart';
+import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/ui/item_layouts/device_item_layout.dart';
+import 'package:service_admin/ui/pages/auth_page.dart';
 import 'package:service_admin/ui/pages/device_page.dart';
+import 'package:service_admin/utils/utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,6 +40,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Devices'),
+        actions: [
+          IconButton(onPressed: (){
+            locator<Auth>().logout();
+            context.navigatePushReplace(const AuthPage());
+          }, icon: const Icon(Icons.login_outlined))
+        ],
       ),
       body: StreamBuilder(
           stream: connection.stream(),
