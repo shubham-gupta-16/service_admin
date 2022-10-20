@@ -6,25 +6,17 @@ import 'package:service_admin/firebase/database.dart';
 import 'models/event_model.dart';
 
 class EventLogListener {
-  final DatabaseReference _dbRef;
-  final String deviceKey;
+  final DatabaseReference _dataRef;
 
-  EventLogListener(this._dbRef, this.deviceKey);
+  EventLogListener(this._dataRef);
 
   StreamController<List<EventModel>>? _controller;
 
-  // final List<EventModel> _eventList = [];
-
   Stream<List<EventModel>> stream() async* {
-    // _eventList.clear();
-    _controller = FirebaseDatabase.instance.ref()
-        .child(DbRef.data)
-        .child(deviceKey)
-        .child(DbRef.log)
+    _controller = _dataRef
+        .child(DbRef.logs)
         .stream<EventModel>(
             converter: (snapshot) => EventModel.fromSnapshot(snapshot));
-
-    print("${DbRef.data}/$deviceKey/${DbRef.log}");
 
     yield* _controller!.stream;
   }

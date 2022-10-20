@@ -21,7 +21,7 @@ class _EventLogPageState extends State<EventLogPage> {
     scrollController = ScrollController();
     dataConnection = locator();
     eventLogListener =
-        EventLogListener(locator(), dataConnection.deviceModel.deviceKey);
+        EventLogListener(dataConnection.dataRef);
     super.initState();
   }
 
