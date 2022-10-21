@@ -18,8 +18,10 @@ class Auth {
   String get requireUid => auth.currentUser!.uid;
 
   User? get currentUser => auth.currentUser;
-
   User get requireCurrentUser => auth.currentUser!;
+
+  String? get getUserName => auth.currentUser?.email?.split("@")[0];
+  String get requireUserName => getUserName!;
 
   Future<AuthCode> login(String username, String password) async {
     try {

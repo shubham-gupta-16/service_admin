@@ -3,12 +3,15 @@ import 'package:service_admin/api/all_devices_connection.dart';
 import 'package:service_admin/api/api_constants.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/api/device_data_connection.dart';
+import 'package:service_admin/api/new_device_connetor.dart';
 
 final locator = GetIt.instance;
 
 void initializeDependencyInjection() {
   locator.registerSingleton(DbRef.getRootRef());
   locator.registerSingleton(Auth());
+
+  locator.registerSingleton(NewDeviceConnector(locator(), locator()));
   locator.registerSingleton(AllDevicesConnection(locator(), locator()));
   locator.registerSingleton(DeviceDataConnection(locator(), locator()));
 }

@@ -9,6 +9,7 @@ import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/ui/item_layouts/device_item_layout.dart';
+import 'package:service_admin/ui/pages/add_device_page.dart';
 import 'package:service_admin/ui/pages/auth_page.dart';
 import 'package:service_admin/ui/pages/device_page.dart';
 import 'package:service_admin/utils/utils.dart';
@@ -76,6 +77,11 @@ class _HomePageState extends State<HomePage> {
               );
             }
           }),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          context.navigatePush(AddDevicePage());
+        },),
     );
   }
 }
