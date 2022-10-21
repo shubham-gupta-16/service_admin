@@ -16,9 +16,9 @@ class NewDeviceConnector {
 
   String? _key;
 
-  Future<Uri> createNewLink()  async {
+  Future<int> createNewLink()  async {
     final code = _random.nextInt(899999) + 100000;
-    final Completer<Uri> completer = Completer();
+    final Completer<int> completer = Completer();
     await close();
     _key = code.toString();
     await _dbRef.child(DbRef.connectionRequests).child(_key!).set({
@@ -26,7 +26,7 @@ class NewDeviceConnector {
       "username": auth.requireUserName,
       "createdOn": DateTime.now().millisecondsSinceEpoch
     }).then((_) {
-      completer.complete(Uri.parse("pro://ser.acc/$code"));
+      completer.complete(code);
     }).catchError((err){
       completer.completeError(err.toString());
     });

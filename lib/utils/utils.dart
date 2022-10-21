@@ -30,6 +30,11 @@ extension StringExt on String{
 }
 
 extension Context on BuildContext {
+
+  void showSnackBar(String message){
+    ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: Text(message)));
+  }
+
   void navigatePush(Widget page){
     Navigator.push(this, MaterialPageRoute(builder: (context)=>page));
   }

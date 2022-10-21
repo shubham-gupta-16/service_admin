@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:service_admin/api/new_device_connetor.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
+import 'package:service_admin/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../api/di/locator.dart';
@@ -30,19 +32,20 @@ class _AddDevicePageState extends State<AddDevicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+        appBar: AppBar(),
         body: FutureBuilder(
             future: connector.createNewLink(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Center(
                     child: TextElevatedButton(
-                        text: snapshot.requireData.toString(), onPressed: () async {
-                      if (!await launchUrl(snapshot.requireData, mode: LaunchMode.externalApplication)) {
-                        print( "Could not launch ${snapshot.requireData}");
-                      }
-                    },));
+                  text: snapshot.requireData.toString(),
+                  onPressed: () async {
+                    await Clipboard.setData(ClipboardData(text: snapshot.requireData.toString()));
+                    if (!mounted) return;
+                    context.showSnackBar("Code Copied");
+                  },
+                ));
               } else if (snapshot.hasError) {
                 return Center(child: Text(snapshot.error.toString()));
               } else {
