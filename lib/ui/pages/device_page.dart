@@ -7,7 +7,8 @@ import '../../api/di/locator.dart';
 import '../widgets/text_elevated_button.dart';
 
 class DevicePage extends StatefulWidget {
-  const DevicePage({Key? key}) : super(key: key);
+  final bool isDesktop;
+  const DevicePage({Key? key, required this.isDesktop}) : super(key: key);
 
   @override
   State<DevicePage> createState() => _DevicePageState();
@@ -27,6 +28,7 @@ class _DevicePageState extends State<DevicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: widget.isDesktop ? Theme.of(context).colorScheme.surfaceVariant : null,
       appBar: AppBar(
         title: Text(_dataConnection.deviceModel.name),
       ),

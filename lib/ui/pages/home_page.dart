@@ -1,87 +1,68 @@
-import 'dart:async';
-import 'dart:math';
-
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:service_admin/api/all_devices_connection.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/api/di/locator.dart';
+import 'package:service_admin/api/models/device_model.dart';
 import 'package:service_admin/ui/item_layouts/device_item_layout.dart';
 import 'package:service_admin/ui/pages/add_device_page.dart';
 import 'package:service_admin/ui/pages/auth_page.dart';
 import 'package:service_admin/ui/pages/device_page.dart';
+import 'package:service_admin/ui/sections/devices_section.dart';
 import 'package:service_admin/utils/utils.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late AllDevicesConnection connection;
 
-  @override
-  void initState() {
-    connection = locator();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    connection.close();
-    super.dispose();
-  }
+  DeviceModel? deviceModel;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Devices'),
-        actions: [
-          IconButton(onPressed: (){
-            locator<Auth>().logout();
-            context.navigatePushReplace(const AuthPage());
-          }, icon: const Icon(Icons.login_outlined))
-        ],
-      ),
-      body: StreamBuilder(
-          stream: connection.stream(),
-          builder: (context, snapshot) {
-            // print(snapshot);
-            if (snapshot.data != null) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final deviceModel = snapshot.requireData[index];
-                  return DeviceItemLayout(
-                    deviceModel: deviceModel,
-                    onPressed: () {
-                      locator<DeviceDataConnection>()
-                          .setDevice(deviceModel);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DevicePage()),
-                      );
-                    },
-                  );
-                },
-                itemCount: snapshot.requireData.length,
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          context.navigatePush(AddDevicePage());
-        },),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isDesktop = constraints.maxWidth > 600;
+        final devicesSection = DevicesSection(isDesktop: isDesktop, onDeviceSelected: (deviceModel) {
+          locator<DeviceDataConnection>().setDevice(deviceModel);
+          if (!isDesktop) {
+            context.navigatePush(const DevicePage(isDesktop: false));
+          } else {
+            setState(() {
+              this.deviceModel = deviceModel;
+            });
+          }
+        });
+
+        if (isDesktop) {
+          return Scaffold(
+            body: Row(
+            children: [
+              SizedBox(
+                width: 400,
+                  child: devicesSection),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: deviceModel != null ? DevicePage(isDesktop: true,): null),
+              )
+            ],
+        ),
+          );
+        }
+
+        return devicesSection;
+
+      }
     );
   }
 }
