@@ -6,32 +6,38 @@ import 'package:service_admin/utils/utils.dart';
 class DeviceItemLayout extends StatelessWidget {
   final DeviceModel deviceModel;
   final VoidCallback onPressed;
-  const DeviceItemLayout({Key? key, required this.deviceModel, required this.onPressed}) : super(key: key);
+  final bool isSelected;
+  const DeviceItemLayout({Key? key, required this.deviceModel, this.isSelected = false, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      child: InkWell(
-        onTap: onPressed,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondaryContainer,
-            borderRadius: BorderRadius.circular(20)
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: Text("${deviceModel.name} - ${deviceModel.status == 0 ? "Offline" : "Online"}",
-                style: Theme.of(context).textTheme.bodyLarge,),
-              ),
-              Positioned(
-                top: 0,
-                  right: 0,
-                  child: Text(deviceModel.createdOn.displayDate())),
-            ],
+      child: Card(
+        color: isSelected ? Theme.of(context).colorScheme.primaryContainer : null,
+        clipBehavior: Clip.antiAlias,
+        // decoration: BoxDecoration(
+        //   color: Theme.of(context).colorScheme.surface,
+        //   borderRadius: BorderRadius.circular(20)
+        // ),
+        child: InkWell(
+          onTap: onPressed,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Text(deviceModel.name + (isSelected ? " Sele" : ""),
+                  style: Theme.of(context).textTheme.titleMedium,),
+                ),
+                Positioned(
+                  top: 0,
+                    right: 0,
+                    child: Text(deviceModel.createdOn.displayDate(),
+                    style: Theme.of(context).textTheme.caption,)),
+              ],
+            ),
           ),
         ),
       ),

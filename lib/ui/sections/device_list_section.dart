@@ -37,8 +37,12 @@ class _DevicesSectionState extends State<DevicesSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: widget.isDesktop ? Theme.of(context).colorScheme.surface : null,
       appBar: AppBar(
+        leading: const SizedBox(),
+        leadingWidth: 0,
         title: const Text('Devices'),
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(onPressed: (){
             locator<Auth>().logout();
@@ -51,13 +55,22 @@ class _DevicesSectionState extends State<DevicesSection> {
           builder: (context, snapshot) {
             // print(snapshot);
             if (snapshot.data != null) {
+              final dataConn = locator<DeviceDataConnection>();
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final deviceModel = snapshot.requireData[index];
+                  print(deviceModel.name);
+                  print (dataConn.deviceModel?.name);
+                  print("-----------------------------------");
                   return DeviceItemLayout(
                     deviceModel: deviceModel,
+                    isSelected: deviceModel.deviceKey == dataConn.deviceModel?.deviceKey,
                     onPressed: () {
-                      widget.onDeviceSelected(deviceModel);
+                      // setState(() {
+                        print("pressed");
+                        dataConn.setDevice(deviceModel);
+                        widget.onDeviceSelected(deviceModel);
+                      // });
                     },
                   );
                 },

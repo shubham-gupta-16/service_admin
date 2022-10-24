@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 
 ColorScheme mySchemeLight(Brightness mode) => ColorScheme.fromSeed(seedColor: Colors.blue, brightness: mode).copyWith(
-  background: mode == Brightness.dark ? const Color(0xFF101316) : null,
-  surface: mode == Brightness.dark ? Color(0xFF191E23) : null
+  surface: mode == Brightness.dark ? const Color(0xFF101316) : null,
+  background: mode == Brightness.dark ? const Color(0xFF191E23) : null
 );
 
 ThemeData getTheme(Brightness mode, {bool useMaterial3 = true}) => ThemeData(
   brightness: mode,
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     surfaceTintColor: Colors.transparent,
-    backgroundColor: Colors.transparent,
+    backgroundColor: mySchemeLight(mode).background,
     scrolledUnderElevation: 0,
 
   ),

@@ -3,15 +3,17 @@ import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/api/event_log_listener.dart';
 import 'package:service_admin/ui/item_layouts/event_item_layout.dart';
+import 'package:service_admin/ui/sections/device_section.dart';
+import 'package:service_admin/utils/utils.dart';
 
-class EventLogPage extends StatefulWidget {
-  const EventLogPage({Key? key}) : super(key: key);
+class EventLogFragment extends StatefulWidget {
+  const EventLogFragment({Key? key}) : super(key: key);
 
   @override
-  State<EventLogPage> createState() => _EventLogPageState();
+  State<EventLogFragment> createState() => _EventLogFragmentState();
 }
 
-class _EventLogPageState extends State<EventLogPage> {
+class _EventLogFragmentState extends State<EventLogFragment> {
   late DeviceDataConnection dataConnection;
   late EventLogListener eventLogListener;
   late ScrollController scrollController;
@@ -36,7 +38,7 @@ class _EventLogPageState extends State<EventLogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event Logs'),
+        title: Text(DeviceFragment.logs.title),
       ),
       body: StreamBuilder(
         stream: eventLogListener.stream(),

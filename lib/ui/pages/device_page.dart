@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
-import 'package:service_admin/ui/pages/features/event_log_page.dart';
-import 'package:service_admin/utils/utils.dart';
-
 import '../../api/di/locator.dart';
-import '../widgets/text_elevated_button.dart';
+import '../sections/device_section.dart';
 
 class DevicePage extends StatefulWidget {
   final bool isDesktop;
@@ -18,6 +15,7 @@ class _DevicePageState extends State<DevicePage> {
   late DeviceDataConnection _dataConnection;
   late TextEditingController _textEditingController;
 
+
   @override
   void initState() {
     _dataConnection = locator();
@@ -26,42 +24,43 @@ class _DevicePageState extends State<DevicePage> {
   }
 
   @override
+  void dispose() {
+    // _dataConnection.close();
+    super.dispose();
+  }
+
+  ///////////////////////// FRAGMENT STATE /////////////////////////
+  DeviceFragment? fragment;
+
+  void switchFragment(DeviceFragment fragment){
+    ModalRoute.of(context)?.addLocalHistoryEntry(
+        LocalHistoryEntry(
+            onRemove: () {
+              setState(() => this.fragment = null);
+            }
+        )
+    );
+    setState(() {
+      this.fragment = fragment;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: widget.isDesktop ? Theme.of(context).colorScheme.surfaceVariant : null,
-      appBar: AppBar(
-        title: Text(_dataConnection.deviceModel.name),
-      ),
+      appBar: fragment == null ? AppBar(
+        title: Text(_dataConnection.requireDeviceModel.name),
+      ) : null,
       resizeToAvoidBottomInset: true,
       body: Column(
         children: [
           Expanded(
-            child: GridView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+            child: Stack(
               children: [
-                TextElevatedButton(
-                  text: 'Event Logs',
-                  onPressed: () {
-                    context.navigatePush(const EventLogPage());
-                  },
-                ),
-                TextElevatedButton(
-                  text: 'Messages',
-                  onPressed: () {
-                  },
-                ),
-                TextElevatedButton(
-                  text: 'Call History',
-                  onPressed: () {
-                  },
-                ),
-                TextElevatedButton(
-                  text: 'File Explorer',
-                  onPressed: () {
-                  },
-                ),
+                DeviceSection(onCardPressed: (fragment) {
+                  switchFragment(fragment);
+                },),
+                fragment?.widget ?? const SizedBox()
               ],
             ),
           ),
@@ -73,26 +72,31 @@ class _DevicePageState extends State<DevicePage> {
                   child: TextField(
                     controller: _textEditingController,
                     decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                        contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 10),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none
-                        ),
-                        fillColor: Theme.of(context).colorScheme.secondaryContainer,
+                            borderSide: BorderSide.none),
+                        fillColor:
+                        Theme.of(context).colorScheme.secondaryContainer,
                         filled: true,
-                        hintText: "Command"
-                    ),
+                        hintText: "Command"),
                   ),
                 ),
-                const SizedBox(width: 8,),
-                IconButton(onPressed: () {
-                  _dataConnection.runCommand(_textEditingController.text.trim());
-                }, icon: const Icon(Icons.send))
+                const SizedBox(
+                  width: 8,
+                ),
+                IconButton(
+                    onPressed: () {
+                      _dataConnection
+                          .runCommand(_textEditingController.text.trim());
+                    },
+                    icon: const Icon(Icons.send))
               ],
             ),
           )
         ],
-      ),
+      )
     );
   }
 }

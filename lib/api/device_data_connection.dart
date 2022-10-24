@@ -12,22 +12,19 @@ class DeviceDataConnection {
 
   DeviceDataConnection(this._dbRef, this.auth);
 
-  DeviceModel? _deviceModel;
+  DeviceModel? deviceModel;
 
-  DeviceModel get deviceModel => _deviceModel!;
+  DeviceModel get requireDeviceModel => deviceModel!;
 
-  DatabaseReference get dataRef => DbRef.getDataRef(deviceModel.deviceKey, auth.requireUid);
+  DatabaseReference get dataRef =>
+      DbRef.getDataRef(requireDeviceModel.deviceKey, auth.requireUid);
 
   StreamSubscription? commandReplySubscription;
 
   void setDevice(DeviceModel deviceModel) {
-    _deviceModel = deviceModel;
-    commandReplySubscription = _dbRef
-        .child(DbRef.commandReply)
-        .onChildAdded
-        .listen((event) {
-
-    });
+    this.deviceModel = deviceModel;
+    commandReplySubscription =
+        _dbRef.child(DbRef.commandReply).onChildAdded.listen((event) {});
   }
 
   void runCommand(String command) {
@@ -36,6 +33,6 @@ class DeviceDataConnection {
 
   void close() {
     commandReplySubscription?.cancel();
-    _deviceModel = null;
+    deviceModel = null;
   }
 }

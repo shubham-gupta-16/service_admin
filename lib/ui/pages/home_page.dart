@@ -8,7 +8,7 @@ import 'package:service_admin/ui/item_layouts/device_item_layout.dart';
 import 'package:service_admin/ui/pages/add_device_page.dart';
 import 'package:service_admin/ui/pages/auth_page.dart';
 import 'package:service_admin/ui/pages/device_page.dart';
-import 'package:service_admin/ui/sections/devices_section.dart';
+import 'package:service_admin/ui/sections/device_list_section.dart';
 import 'package:service_admin/utils/utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +20,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  DeviceModel? deviceModel;
+  late DeviceDataConnection _dataConnection;
+
+  @override
+  void initState() {
+    _dataConnection = locator();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +34,18 @@ class _HomePageState extends State<HomePage> {
       builder: (context, constraints) {
         final isDesktop = constraints.maxWidth > 600;
         final devicesSection = DevicesSection(isDesktop: isDesktop, onDeviceSelected: (deviceModel) {
-          locator<DeviceDataConnection>().setDevice(deviceModel);
           if (!isDesktop) {
             context.navigatePush(const DevicePage(isDesktop: false));
           } else {
             setState(() {
-              this.deviceModel = deviceModel;
             });
           }
         });
 
         if (isDesktop) {
+          final deviceModel = _dataConnection.deviceModel;
           return Scaffold(
+            backgroundColor: isDesktop ? Theme.of(context).colorScheme.surface : null,
             body: Row(
             children: [
               SizedBox(
@@ -49,11 +55,11 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   margin: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
+                      color: Theme.of(context).colorScheme.background,
                       borderRadius: BorderRadius.circular(10)
                     ),
                     clipBehavior: Clip.antiAlias,
-                    child: deviceModel != null ? DevicePage(isDesktop: true,): null),
+                    child: deviceModel != null ? DevicePage(key: Key(deviceModel.deviceKey),isDesktop: true,): null),
               )
             ],
         ),
