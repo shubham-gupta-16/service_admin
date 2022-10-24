@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   margin: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(10)
                     ),
                     clipBehavior: Clip.antiAlias,
