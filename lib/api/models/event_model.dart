@@ -35,4 +35,9 @@ class EventModel {
       (snapshot.child("nText2").value as String?).decode(),
       (snapshot.child("nPackage").value as String?).decode(),
       int.tryParse(snapshot.key ?? "0") ?? 0);
+
+  factory EventModel.loader(String key) => EventModel(
+      -1,
+      null, null, null, null, null, null,
+      (int.tryParse(key ?? "0") ?? 1) - 1);
 }

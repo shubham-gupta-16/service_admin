@@ -14,6 +14,12 @@ class EventItemLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (eventModel.event == -1) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 30),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
     return InkWell(
       onTap: onPressed,
       child: Stack(

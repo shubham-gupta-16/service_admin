@@ -10,13 +10,13 @@ class EventLogListener {
 
   EventLogListener(this._dataRef);
 
-  static const _itemPerPage = 100;
+  static const _itemPerPage = 101;
 
-  StreamController<List<EventModel?>>? _controller;
+  StreamController<List<EventModel>>? _controller;
 
-  final List<EventModel?> list = [];
+  final List<EventModel> list = [];
 
-  Stream<List<EventModel?>>? get getStream => _controller?.stream;
+  Stream<List<EventModel>>? get getStream => _controller?.stream;
 
   start() {
     _controller = StreamController.broadcast();
@@ -26,9 +26,9 @@ class EventLogListener {
         .limitToLast(_itemPerPage).onChildAdded.listen((event) {
       if (event.snapshot.exists) {
         if (list.isEmpty) {
-          list.add(null);
+          list.add(EventModel.loader(event.snapshot.key!));
         }
-        list.add(EventModel.fromSnapshot(event.snapshot));
+        list.insert(0, EventModel.fromSnapshot(event.snapshot));
         _controller?.add(list);
       }
     });
@@ -46,8 +46,9 @@ class EventLogListener {
   }
   Future<void> loadMore() async {
     if (list.length < 2) return;
-    final model = list[1];
-    if (model == null) return;
+    // if (list.isEmpty) return;
+    final model = list[list.length - 2];
+    if (model.event == -1) return;
     print("loadMore");
     print(model.timestampAsKey);
     print("********************");
@@ -56,14 +57,14 @@ class EventLogListener {
         .endBefore(model.timestampAsKey.toString()).limitToLast(_itemPerPage).get();
 
     if (snapshot.exists){
-      if (list.isNotEmpty && list.first == null){
-        list.removeAt(0);
+      if (list.isNotEmpty && list.last.event == -1){
+        list.removeLast();
       }
       for (final s in snapshot.children.toList(growable: false).reversed){
-        list.insert(0, EventModel.fromSnapshot(s));
+        list.add(EventModel.fromSnapshot(s));
         print(s.key);
       }
-      list.insert(0, null);
+      list.add(EventModel.loader(list.last.timestampAsKey.toString()));
       _controller?.add(list);
     }
   }
