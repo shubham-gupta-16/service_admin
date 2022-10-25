@@ -6,6 +6,13 @@ import 'package:service_admin/utils/utils.dart';
 import 'package:service_admin/utils/utils.dart';
 import 'package:service_admin/utils/utils.dart';
 
+class EventDateGroup {
+  final String date;
+  final List<EventModel> subList;
+
+  EventDateGroup(this.date, this.subList);
+}
+
 class EventModel {
   final int event;
   final String? text;

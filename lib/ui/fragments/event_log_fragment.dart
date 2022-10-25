@@ -5,6 +5,7 @@ import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/api/event_log_listener.dart';
 import 'package:service_admin/ui/item_layouts/event_item_layout.dart';
 import 'package:service_admin/ui/sections/device_section.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 import '../../api/models/event_model.dart';
 
@@ -30,8 +31,8 @@ class _EventLogFragmentState extends State<EventLogFragment> {
     eventLogListener.start();
   }
 
-  void _scrollListener(){
-    if (scrollController.position.extentAfter == 0){
+  void _scrollListener() {
+    if (scrollController.position.extentAfter == 0) {
       eventLogListener.loadMore();
     }
   }
@@ -54,17 +55,112 @@ class _EventLogFragmentState extends State<EventLogFragment> {
         stream: eventLogListener.getStream,
         builder: (context, snapshot) {
           if (snapshot.data == null) return const SizedBox();
-          return _EventListView(list: snapshot.requireData, controller: scrollController);
+          return _EventListView3(
+              list: snapshot.requireData, controller: scrollController);
         },
       ),
     );
   }
 }
 
+class _EventListView3 extends StatelessWidget {
+  final List<EventModel?> list;
+  final ScrollController controller;
+
+  const _EventListView3(
+      {Key? key, required this.list, required this.controller})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scrollbar(
+      interactive: true,
+      child: ListView.builder(
+        controller: controller,
+        reverse: true,
+        itemBuilder: (context, index) {
+          final eventModel = list.reversed.toList(growable: false)[index];
+          final Widget view;
+          if (eventModel == null) {
+            view = const Padding(
+              padding: EdgeInsets.symmetric(vertical: 30),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          } else {
+            view = EventItemLayout(
+              eventModel: eventModel,
+              onPressed: () {},
+            );
+          }
+          return StickyHeader(
+            content: view,
+            header: Container(
+              child: Center(
+                child: Container(
+                  color: Colors.blue,
+                  child: Text(
+                    'Header #0',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+        itemCount: list.length,
+      ),
+    );
+    ;
+  }
+}
+
+class _EventListView2 extends StatelessWidget {
+  final List<EventModel?> list;
+  final ScrollController controller;
+
+  const _EventListView2(
+      {Key? key, required this.list, required this.controller})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      // controller: controller,
+      // reverse: true,
+      slivers: list.map((eventModel) {
+        return _header(child: Text("WOW"));
+      }).toList(growable: false),
+    );
+  }
+
+  Widget _header({required Widget child}) => SliverStickyHeader(
+        // overlapsContent: true,
+        header: Container(
+          child: Center(
+            child: Container(
+              color: Colors.blue,
+              child: Text(
+                'Header #0',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, i) => child,
+            childCount: 4,
+          ),
+        ),
+      );
+}
+
 class _EventListView extends StatelessWidget {
   final List<EventModel?> list;
   final ScrollController controller;
-  const _EventListView({Key? key, required this.list, required this.controller}) : super(key: key);
+
+  const _EventListView({Key? key, required this.list, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,33 +179,12 @@ class _EventListView extends StatelessWidget {
           }
           return EventItemLayout(
             eventModel: eventModel,
-            onPressed: (){},
+            onPressed: () {},
           );
         },
         itemCount: list.length,
       ),
-    );;
+    );
+    ;
   }
 }
-
-
-Widget _header({required Widget child}) =>
-    SliverStickyHeader(
-      header: Container(
-        height: 60.0,
-        color: Colors.lightBlue,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          'Header #0',
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-              (context, i) =>
-              child,
-          childCount: 4,
-        ),
-      ),
-    );
