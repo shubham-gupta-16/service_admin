@@ -122,7 +122,7 @@ class _EventListView2State extends State<EventListView2> {
       },
       child: CustomScrollView(
         controller: widget.controller,
-        // reverse: true,
+        reverse: true,
         slivers: dates.map((date) {
           //todo logic tobe improved
           return _header(date: date, subList: subList[dates.indexOf(date)]);

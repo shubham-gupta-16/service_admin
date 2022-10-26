@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../api/models/event_model.dart';
 import '../../item_layouts/event_item_layout.dart';
@@ -22,28 +21,24 @@ class StickyDateListView extends StatefulWidget {
 class _StickyDateListViewState extends State<StickyDateListView> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-  final controller = ScrollController();
-
-  final List<double> vList = [];
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   @override
   void initState() {
     super.initState();
-    controller.addListener(_scrollListener);
-    // itemPositionsListener.itemPositions.addListener(_scrollListener);
+    itemPositionsListener.itemPositions.addListener(_scrollListener);
   }
   
   @override
   void dispose() {
-    controller.removeListener(_scrollListener);
-    // itemPositionsListener.itemPositions.removeListener(_scrollListener);
+    itemPositionsListener.itemPositions.removeListener(_scrollListener);
     super.dispose();
   }
 
   bool isLoadingMore = false;
 
   void _scrollListener() {
-    final index = vList.lastIndexWhere((element) => element != 0);
+    final index = itemPositionsListener.itemPositions.value.last.index;
     print("List: ${widget.list.length}, $index, ${_getDateByIndex(index)}");
     if (topIndex != index){
       if (index == widget.list.length - 1 && widget.onLoadMore != null && !isLoadingMore){
@@ -65,21 +60,12 @@ class _StickyDateListViewState extends State<StickyDateListView> {
 
   @override
   Widget build(BuildContext context) {
-
-    if (vList.length != widget.list.length) {
-      vList.clear();
-
-      for (var _ in widget.list) {
-        vList.add(0);
-      }
-    }
-
     // print(topIndex);
     final date = _getDateByIndex(topIndex);
     return Stack(
       children: [
-        ListView.builder(
-          controller: controller,
+        ScrollablePositionedList.builder(
+          itemPositionsListener: itemPositionsListener,
           reverse: true,
           itemBuilder: (context, index) {
             final eventModel = widget.list[index];
@@ -109,14 +95,7 @@ class _StickyDateListViewState extends State<StickyDateListView> {
             } else {
               column = view;
             }
-            return VisibilityDetector(key: Key(eventModel.timestampAsKey.toString()),
-                onVisibilityChanged: (visibilityInfo) {
-                  var visiblePercentage = visibilityInfo.visibleFraction * 100;
-                  vList[index] = visibilityInfo.visibleFraction;
-                  debugPrint(
-                      'Widget $index -> ${visibilityInfo.key} is ${visiblePercentage}% visible');
-                },
-                child: column);
+            return column;
           },
           itemCount: widget.list.length,
         ),

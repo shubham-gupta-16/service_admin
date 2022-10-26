@@ -82,6 +82,8 @@ class _EventLogFragmentState extends State<EventLogFragment> {
               (snapshot.requireData.first == null &&
                   snapshot.requireData.length == 1)) return const SizedBox();
 
+          // return _EventListView(list: snapshot.requireData, controller: scrollController);
+
           return StickyDateListView(
             list: snapshot.requireData,
             header: (String value) => Align(

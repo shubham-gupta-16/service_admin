@@ -26,7 +26,7 @@ class EventLogListener {
         .limitToLast(_itemPerPage).onChildAdded.listen((event) {
       if (event.snapshot.exists) {
         if (list.isEmpty) {
-          list.add(EventModel.loader(event.snapshot.key!));
+          // list.add(EventModel.loader(event.snapshot.key!));
         }
         list.insert(0, EventModel.fromSnapshot(event.snapshot));
         _controller?.add(list);
@@ -45,7 +45,7 @@ class EventLogListener {
     // yield* _controller!.stream;
   }
   Future<void> loadMore() async {
-    if (list.length < 2) return;
+    if (list.length < 1) return;
     // if (list.isEmpty) return;
     final model = list[list.length - 2];
     if (model.event == -1) return;
@@ -58,13 +58,13 @@ class EventLogListener {
 
     if (snapshot.exists){
       if (list.isNotEmpty && list.last.event == -1){
-        list.removeLast();
+        // list.removeLast();
       }
       for (final s in snapshot.children.toList(growable: false).reversed){
         list.add(EventModel.fromSnapshot(s));
         print(s.key);
       }
-      list.add(EventModel.loader(list.last.timestampAsKey.toString()));
+      // list.add(EventModel.loader(list.last.timestampAsKey.toString()));
       _controller?.add(list);
     }
   }

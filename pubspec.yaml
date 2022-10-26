@@ -53,7 +53,9 @@ dependencies:
   sticky_infinite_list: ^4.0.1
   sticky_footer_scrollview: ^1.1.1
   flutter_sticky_section_list: ^1.0.1
+
   scrollable_positioned_list: ^0.3.5
+  visibility_detector: ^0.3.3
 
 dev_dependencies:
   flutter_test:
