@@ -40,4 +40,13 @@ class EventModel {
       -1,
       null, null, null, null, null, null,
       (int.tryParse(key ?? "0") ?? 1) - 1);
+
+  @override
+  String toString() {
+    return {
+      "event": event,
+      "timeStampAsKey": timestampAsKey,
+      "text": text
+    }.toString();
+  }
 }

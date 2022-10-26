@@ -10,7 +10,7 @@ class EventLogListener {
 
   EventLogListener(this._dataRef);
 
-  static const _itemPerPage = 101;
+  static const _itemPerPage = 11;
 
   StreamController<List<EventModel>>? _controller;
 

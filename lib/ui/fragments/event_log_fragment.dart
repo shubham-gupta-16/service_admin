@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
@@ -53,8 +54,7 @@ class _EventLogFragmentState extends State<EventLogFragment> {
 
   void _scrollListener() {
     if (scrollController.position.extentAfter == 0) {
-      print("*********************");
-      // eventLogListener.loadMore();
+      eventLogListener.loadMore();
     }
   }
 
@@ -75,11 +75,84 @@ class _EventLogFragmentState extends State<EventLogFragment> {
       body: StreamBuilder(
         stream: eventLogListener.getStream,
         builder: (context, snapshot) {
-          if (snapshot.data == null || snapshot.requireData.isEmpty ||
+          if (snapshot.data == null ||
+              snapshot.requireData.isEmpty ||
               (snapshot.requireData.first == null &&
                   snapshot.requireData.length == 1)) return const SizedBox();
-          return _EventListView2(
-              list: snapshot.requireData.reversed.toList(), controller: scrollController);
+          /*return _EventListView2(
+              list: snapshot.requireData.reversed.toList(),
+              controller: scrollController,
+              onScrolledToTop: () {
+                eventLogListener.loadMore();
+                print('######################################################');
+              });*/
+
+          return _EventListView5(list: snapshot.requireData.reversed.toList(), controller: itemPositionListener,
+              onScrolledToTop: () {
+                eventLogListener.loadMore();
+              });
+
+          // return _EventListView(list: snapshot.requireData, controller: scrollController);
+        },
+      ),
+    );
+  }
+}
+
+
+class _EventListView6 extends StatelessWidget {
+  final List<EventModel> list;
+  final ItemPositionsListener controller;
+  final VoidCallback onScrolledToTop;
+
+  const _EventListView6(
+      {Key? key, required this.list, required this.controller, required this.onScrolledToTop})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+    return NotificationListener(
+      onNotification: (nf){
+        // print(nf.runtimeType);
+
+        if (nf is ScrollMetricsNotification){
+          print(nf.metrics);
+          if (nf.metrics.extentAfter == 0){
+            print("##################################################");
+            print(list);
+            onScrolledToTop();
+          }
+        }
+        // print(nf.runtimeType);
+        return true;
+      },
+      child: StickyGroupedListView<EventModel, String>(
+        elements: list,
+        groupBy: (eventModel) => formatter.format(
+            DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey)),
+        groupSeparatorBuilder: (eventModel) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).colorScheme.primaryContainer),
+            child: Text(
+              formatter.format(
+                  DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey)),
+              style: Theme.of(context).textTheme.overline?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer),
+            )),
+        itemComparator: (e1, e2) =>
+            e1.timestampAsKey.compareTo(e2.timestampAsKey),
+        stickyHeaderBackgroundColor: Colors.transparent,
+        order: StickyGroupedListOrder.DESC,
+        reverse: true,
+        itemBuilder: (context, eventModel) {
+          return EventItemLayout(
+            eventModel: eventModel,
+            onPressed: () {},
+          );
         },
       ),
     );
@@ -89,38 +162,58 @@ class _EventLogFragmentState extends State<EventLogFragment> {
 class _EventListView5 extends StatelessWidget {
   final List<EventModel> list;
   final ItemPositionsListener controller;
+  final VoidCallback onScrolledToTop;
 
-  const _EventListView5({Key? key, required this.list, required this.controller})
+  const _EventListView5(
+      {Key? key, required this.list, required this.controller, required this.onScrolledToTop})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-    return StickyGroupedListView<EventModel, String>(
-      elements: list,
-      itemPositionsListener: controller,
-      floatingHeader: true,
-      groupBy: (eventModel) => formatter.format(DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey)),
-      groupSeparatorBuilder: (eventModel)=>Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Theme.of(context).colorScheme.primaryContainer
-          ),
-          child: Text(formatter.format(DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey)), style: Theme.of(context).textTheme.overline?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimaryContainer
-          ),)),
-      itemComparator: (e1, e2) => e1.timestampAsKey.compareTo(e2.timestampAsKey),
-      stickyHeaderBackgroundColor: Colors.transparent,
-      order: StickyGroupedListOrder.DESC,
-      reverse: true,
-      itemBuilder: (context, eventModel) {
-        return EventItemLayout(
-          eventModel: eventModel,
-          onPressed: () {},
-        );
+    return NotificationListener(
+      onNotification: (nf){
+        // print(nf.runtimeType);
+
+        if (nf is ScrollMetricsNotification){
+          print(nf.metrics);
+          if (nf.metrics.extentAfter == 0){
+            print("##################################################");
+            print(list);
+            onScrolledToTop();
+          }
+        }
+        // print(nf.runtimeType);
+        return true;
       },
+      child: StickyGroupedListView<EventModel, String>(
+        elements: list,
+        groupBy: (eventModel) => formatter.format(
+            DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey)),
+        groupSeparatorBuilder: (eventModel) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).colorScheme.primaryContainer),
+            child: Text(
+              formatter.format(
+                  DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey)),
+              style: Theme.of(context).textTheme.overline?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer),
+            )),
+        itemComparator: (e1, e2) =>
+            e1.timestampAsKey.compareTo(e2.timestampAsKey),
+        stickyHeaderBackgroundColor: Colors.transparent,
+        order: StickyGroupedListOrder.DESC,
+        reverse: true,
+        itemBuilder: (context, eventModel) {
+          return EventItemLayout(
+            eventModel: eventModel,
+            onPressed: () {},
+          );
+        },
+      ),
     );
   }
 }
@@ -129,32 +222,36 @@ class _EventListView4 extends StatelessWidget {
   final List<EventModel> list;
   final ScrollController controller;
 
-  const _EventListView4({Key? key, required this.list, required this.controller})
+  const _EventListView4(
+      {Key? key, required this.list, required this.controller})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     return GroupedListView<EventModel, String>(
       elements: list,
       floatingHeader: true,
-      groupBy: (eventModel) => formatter.format(DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey ?? 0)),
-      groupSeparatorBuilder: (value)=>
+      groupBy: (eventModel) => formatter.format(
+          DateTime.fromMillisecondsSinceEpoch(eventModel.timestampAsKey ?? 0)),
+      groupSeparatorBuilder: (value) =>
           // Text(value),
-      Container(
-        alignment: Alignment.topCenter,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.primaryContainer
-              ),
-              child: Text(value, style: Theme.of(context).textTheme.overline?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimaryContainer
-              ),))),
-      itemComparator: (e1, e2) => e1.timestampAsKey.compareTo(e2.timestampAsKey),
+          Container(
+              alignment: Alignment.topCenter,
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Theme.of(context).colorScheme.primaryContainer),
+                  child: Text(
+                    value,
+                    style: Theme.of(context).textTheme.overline?.copyWith(
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer),
+                  ))),
+      itemComparator: (e1, e2) =>
+          e1.timestampAsKey.compareTo(e2.timestampAsKey),
       stickyHeaderBackgroundColor: Colors.transparent,
       useStickyGroupSeparators: true,
       order: GroupedListOrder.DESC,
@@ -185,12 +282,13 @@ class _EventListView3 extends StatelessWidget {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     print(list.last);
-    String date = formatter.format(DateTime.fromMillisecondsSinceEpoch(
-        list.first!.timestampAsKey));
+    String date = formatter.format(
+        DateTime.fromMillisecondsSinceEpoch(list.first!.timestampAsKey));
 
-    for (final item in list){
+    for (final item in list) {
       if (item != null) {
-        date = formatter.format(DateTime.fromMillisecondsSinceEpoch(item.timestampAsKey));
+        date = formatter
+            .format(DateTime.fromMillisecondsSinceEpoch(item.timestampAsKey));
       }
       if (!map.containsKey(date)) {
         map[date] = [];
@@ -203,20 +301,22 @@ class _EventListView3 extends StatelessWidget {
     return ListView(
       controller: controller,
       reverse: true,
-      children: map.keys.map((e) => StickyHeader(
-        content: _groupedList(map[e]!),
-        header: Container(
-          child: Center(
-            child: Container(
-              color: Colors.blue,
-              child: Text(
-                date,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ),
-      )).toList(growable: false),
+      children: map.keys
+          .map((e) => StickyHeader(
+                content: _groupedList(map[e]!),
+                header: Container(
+                  child: Center(
+                    child: Container(
+                      color: Colors.blue,
+                      child: Text(
+                        date,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ))
+          .toList(growable: false),
     );
   }
 
@@ -248,9 +348,13 @@ class _EventListView3 extends StatelessWidget {
 class _EventListView2 extends StatefulWidget {
   final List<EventModel> list;
   final ScrollController controller;
+  final VoidCallback onScrolledToTop;
 
   const _EventListView2(
-      {Key? key, required this.list, required this.controller})
+      {Key? key,
+      required this.list,
+      required this.controller,
+      required this.onScrolledToTop})
       : super(key: key);
 
   @override
@@ -258,7 +362,6 @@ class _EventListView2 extends StatefulWidget {
 }
 
 class _EventListView2State extends State<_EventListView2> {
-
   @override
   void initState() {
     super.initState();
@@ -267,23 +370,27 @@ class _EventListView2State extends State<_EventListView2> {
     });
   }
 
+  bool isUserScrolling = false;
+
+  // print('reset');
+  bool initialScroll = false;
+  double lastExtent = 0;
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   @override
   Widget build(BuildContext context) {
-
     final List<String> dates = [];
     final List<List<EventModel>> subList = [];
-
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
     print(widget.list.last);
     String? date;
 
     int pos = -1;
 
-    for (final item in widget.list){
-      final newDate = formatter.format(DateTime.fromMillisecondsSinceEpoch(item.timestampAsKey));
-      if (newDate != date){
+    for (final item in widget.list) {
+      final newDate = formatter
+          .format(DateTime.fromMillisecondsSinceEpoch(item.timestampAsKey));
+      if (newDate != date) {
         date = newDate;
         dates.add(date);
         subList.add([]);
@@ -292,49 +399,50 @@ class _EventListView2State extends State<_EventListView2> {
       subList[pos].add(item);
     }
 
+    return NotificationListener(
+      onNotification: (nf) {
+        // print(nf.runtimeType);
+        if (nf is UserScrollNotification) {
+          if (nf.direction == ScrollDirection.idle) {
+            print(
+                "******************USER_SCROLLING_STOP*************************");
+            isUserScrolling = false;
+          } else {
+            print("******************USER_SCROLLING*************************");
+            isUserScrolling = true;
+          }
+        }
 
-    bool scrollable = false;
-
-    return GestureDetector(
-      // onTapDown: (e){
-      //   setState(() {
-      //     scrollable = true;
-      //   });
-      //   print('hi');
-      // },
-      // onTapUp: (e){
-      //   // setState(() {
-      //   //   scrollable = false;
-      //   // });
-      // },
-      child: NotificationListener<ScrollMetricsNotification>(
-        onNotification: (nf){
-          print(nf.runtimeType);
-          // if (widget.list.length > 5 && !b){
-          //   // controller.jumpTo(0);
-          //   b = true;
-          // }
-          if (!scrollable) {
-            widget.controller.jumpTo(nf.metrics.maxScrollExtent);
-            if (nf.metrics.extentAfter == 0) {
-              scrollable = true;
+        if (nf is ScrollMetricsNotification) {
+          if (initialScroll && nf.metrics.pixels == 0) {
+            widget.onScrolledToTop();
+          }
+          print("Extent: $lastExtent, $initialScroll, $isUserScrolling");
+          if (!isUserScrolling) {
+            if (initialScroll) {
+              if (lastExtent == 0) {
+                widget.controller.jumpTo(nf.metrics.maxScrollExtent);
+              }
+            } else {
+              widget.controller.jumpTo(nf.metrics.maxScrollExtent);
+              if (nf.metrics.extentAfter == 0) {
+                initialScroll = true;
+              }
+              print("===============================");
             }
           }
-            print(nf.metrics.maxScrollExtent);
-            print(nf.metrics.minScrollExtent);
-            print(nf.metrics.pixels);
-            print(nf.metrics.extentAfter);
-            print("===============================");
-          return true;
-        },
-        child: CustomScrollView(
-          controller: widget.controller,
-          // reverse: true,
-          slivers: dates.map((date) {
-            //todo logic tobe improved
-            return _header(date: date, subList: subList[dates.indexOf(date)]);
-          }).toList(growable: false),
-        ),
+          lastExtent = nf.metrics.extentAfter;
+          print("Extent: $lastExtent, ${nf.metrics.pixels}");
+        }
+        return true;
+      },
+      child: CustomScrollView(
+        controller: widget.controller,
+        // reverse: true,
+        slivers: dates.map((date) {
+          //todo logic tobe improved
+          return _header(date: date, subList: subList[dates.indexOf(date)]);
+        }).toList(growable: false),
       ),
     );
   }
@@ -344,19 +452,22 @@ class _EventListView2State extends State<_EventListView2> {
         header: Align(
           alignment: Alignment.topCenter,
           child: Container(
-            color: Colors.blue,
-            child: Text(
-              date,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Theme.of(context).colorScheme.primaryContainer),
+              child: Text(
+                date,
+                style: Theme.of(context).textTheme.overline?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer),
+              )),
         ),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
-                (context, i) {
-                  final eventModel = subList[i];
-                  return Text(eventModel.text ?? "-");
-                } ,
+            (context, i) {
+              final eventModel = subList[i];
+              return Text(eventModel.text ?? "-");
+            },
             childCount: subList.length,
           ),
         ),
@@ -372,27 +483,42 @@ class _EventListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      interactive: true,
-      child: ListView.builder(
-        controller: controller,
-        reverse: true,
-        itemBuilder: (context, index) {
-          final eventModel = list[index];
-          if (eventModel == null) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 30),
-              child: Center(child: CircularProgressIndicator()),
-            );
+    return NotificationListener(
+      onNotification: (nf){
+        // print(nf.runtimeType);
+
+        if (nf is ScrollMetricsNotification){
+          print(nf.metrics);
+          if (nf.metrics.extentAfter == 0){
+            print("##################################################");
+            print(list);
+            // onScrolledToTop();
           }
-          return EventItemLayout(
-            eventModel: eventModel,
-            onPressed: () {},
-          );
-        },
-        itemCount: list.length,
+        }
+        // print(nf.runtimeType);
+        return true;
+      },
+      child: Scrollbar(
+        interactive: true,
+        child: ListView.builder(
+          controller: controller,
+          reverse: true,
+          itemBuilder: (context, index) {
+            final eventModel = list[index];
+            if (eventModel == null) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 30),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            return EventItemLayout(
+              eventModel: eventModel,
+              onPressed: () {},
+            );
+          },
+          itemCount: list.length,
+        ),
       ),
     );
-    ;
   }
 }
