@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
+import 'package:service_admin/ui/widgets/stack_page_transition.dart';
 import '../../api/di/locator.dart';
 import '../sections/device_section.dart';
 
@@ -49,32 +50,14 @@ class _DevicePageState extends State<DevicePage> {
         body: Column(
           children: [
             Expanded(
-              child: Stack(
-                children: [
-                  AnimatedScale(
-                    scale: fragment != null ? 1.05 : 1,
-                    duration: const Duration(milliseconds: 160),
-                    child: DeviceSection(
-                      onCardPressed: (fragment) {
-                        switchFragment(fragment);
-                      },
-                    ),
-                  ),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 160),
-                    transitionBuilder: (child, animation) {
-                      print(animation);
-                      return FadeTransition(
-                        opacity: animation,
-                        child: ScaleTransition(
-                            scale: Tween<double>(begin: 0.8, end: 1)
-                                .animate(animation),
-                            child: child),
-                      );
-                    },
-                    child: fragment?.widget ?? const SizedBox(),
-                  )
-                ],
+              child: StackPageTransition(
+                overlayChild: fragment?.widget,
+                child: DeviceSection(
+                  isDesktop: widget.isDesktop,
+                  onCardPressed: (fragment) {
+                    switchFragment(fragment);
+                  },
+                ),
               ),
             ),
             Padding(
@@ -103,6 +86,7 @@ class _DevicePageState extends State<DevicePage> {
                       onPressed: () {
                         _dataConnection
                             .runCommand(_textEditingController.text.trim());
+                        _textEditingController.clear();
                       },
                       icon: const Icon(Icons.send))
                 ],

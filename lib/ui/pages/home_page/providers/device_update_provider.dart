@@ -6,7 +6,7 @@ import 'package:service_admin/api/models/device_model.dart';
 class DeviceUpdateProvider extends ChangeNotifier{
   DeviceModel? _deviceModel;
 
-  setDevice(DeviceModel deviceModel){
+  setDevice(DeviceModel? deviceModel){
     _deviceModel = deviceModel;
     notifyListeners();
   }

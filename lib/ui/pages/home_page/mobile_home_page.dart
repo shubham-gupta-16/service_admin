@@ -1,11 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/utils/utils.dart';
 
+import '../../widgets/stack_page_transition.dart';
 import '../add_device_page.dart';
 import '../auth_page.dart';
 import '../device_page.dart';

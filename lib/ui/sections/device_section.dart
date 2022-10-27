@@ -43,8 +43,8 @@ extension DeviceFragmentExt on DeviceFragment {
 
 class DeviceSection extends StatefulWidget {
   final void Function(DeviceFragment fragment) onCardPressed;
-
-  const DeviceSection({Key? key, required this.onCardPressed})
+  final bool isDesktop;
+  const DeviceSection({Key? key, required this.onCardPressed, required this.isDesktop})
       : super(key: key);
 
   @override
@@ -64,8 +64,8 @@ class _DeviceSectionState extends State<DeviceSection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-        leadingWidth: 0,
-        leading: const SizedBox(),
+        leadingWidth: widget.isDesktop ? 0 : null,
+        leading:widget.isDesktop ? const SizedBox(): null,
         title: Text(_dataConnection.requireDeviceModel.name),
       ),
       body: GridView(
