@@ -10,7 +10,7 @@ abstract class DbRef{
   static const logsIndex = "logs_index";
   static const command = "cmd";
   static const commandReply = "cmd_reply";
-  static const connectionRequests = "conn_requests";
+  static const connectionRequest = "conn_request";
   static const admin = "admin";
 
   static DatabaseReference getRootRef() => FirebaseDatabase.instance.ref(_ref);

@@ -32,6 +32,7 @@ class EventLogListener {
 
   String? globalDate;
   Future<void> setDate(int index, String date) async {
+    //todo if date is aaj ka date toh child event listener lagana hai
     globalDate = date;
     list.clear();
     _notify();
@@ -84,27 +85,14 @@ class EventLogListener {
     // yield* _controller!.stream;
   }
 
-  // Map<String, List<EventModel>> get _group {
-  //   final map = HashMap<String, List<EventModel>>();
-  //   String date = "";
-  //
-  //   for (final e in list){
-  //     final newDate = _getDate(e);
-  //     if (newDate != date){
-  //       date = newDate;
-  //       map[date] = [];
-  //     }
-  //     map[date]?.add(e);
-  //   }
-  //
-  //   return map;
-  // }
+
 
   String _getDate(EventModel e){
     return df.format(DateTime.fromMillisecondsSinceEpoch(e.timestampAsKey));
   }
 
-  Future<void> loadMore() async {
+  //for pagination future plan
+  /*Future<void> loadMore() async {
     if (list.length < 1) return;
     // if (list.isEmpty) return;
     final model = list[list.length - 2];
@@ -127,7 +115,7 @@ class EventLogListener {
       // list.add(EventModel.loader(list.last.timestampAsKey.toString()));
       _notify();
     }
-  }
+  }*/
 
   void close() {
     _controller?.close();

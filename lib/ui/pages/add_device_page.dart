@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:service_admin/api/new_device_connetor.dart';
+import 'package:service_admin/ui/widgets/auth_text_field.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 import 'package:service_admin/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,15 +17,31 @@ class AddDevicePage extends StatefulWidget {
 
 class _AddDevicePageState extends State<AddDevicePage> {
   late NewDeviceConnector connector;
+  late TextEditingController _textEditingController;
 
   @override
   void initState() {
     connector = locator();
+    _textEditingController = TextEditingController();
     super.initState();
+    _textEditingController.addListener(_onTextChange);
+  }
+
+  Future<void> _onTextChange() async {
+    final text = _textEditingController.text;
+    if (text.length == 6){
+      final res = await connector.verifyCode(text);
+      if (res){
+        if(!mounted) return;
+        context.navigatePop();
+      }
+    }
   }
 
   @override
   void dispose() {
+    _textEditingController.removeListener(_onTextChange);
+    _textEditingController.dispose();
     connector.close();
     super.dispose();
   }
@@ -32,25 +49,18 @@ class _AddDevicePageState extends State<AddDevicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: FutureBuilder(
-            future: connector.createNewLink(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Center(
-                    child: TextElevatedButton.text(
-                  text: snapshot.requireData.toString(),
-                  onPressed: () async {
-                    await Clipboard.setData(ClipboardData(text: snapshot.requireData.toString()));
-                    if (!mounted) return;
-                    context.showSnackBar("Code Copied");
-                  },
-                ));
-              } else if (snapshot.hasError) {
-                return Center(child: Text(snapshot.error.toString()));
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }));
+      appBar: AppBar(),
+      body: Center(
+          child: SizedBox(
+            width: 250,
+            child: AuthTextField(
+        controller: _textEditingController,
+        hint: "Code",
+        maxLength: 6,
+        type: AuthTextFieldType.number,
+        textAlign: TextAlign.center,
+      ),
+          )),
+    );
   }
 }

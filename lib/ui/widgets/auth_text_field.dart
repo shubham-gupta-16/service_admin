@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 enum AuthTextFieldType{
   username,
   email,
-  password
+  password, number
 }
 
 class AuthTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String hint;
   final AuthTextFieldType type;
+  final int? maxLength;
+  final TextAlign? textAlign;
   final TextInputAction? textInputAction;
-  const AuthTextField({Key? key, this.controller, required this.hint, this.type = AuthTextFieldType.username, this.textInputAction}) : super(key: key);
+  const AuthTextField({Key? key, this.controller, required this.hint, this.type = AuthTextFieldType.username, this.textInputAction, this.textAlign, this.maxLength}) : super(key: key);
 
   @override
   State<AuthTextField> createState() => _AuthTextFieldState();
@@ -26,6 +28,8 @@ class _AuthTextFieldState extends State<AuthTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      textAlign: widget.textAlign?? TextAlign.start,
+      maxLength: widget.maxLength,
       textInputAction: widget.textInputAction,
       keyboardType: keyboardType(widget.type),
       validator: (value)=> validator(widget.type, value),
@@ -75,6 +79,8 @@ class _AuthTextFieldState extends State<AuthTextField> {
         return TextInputType.emailAddress;
       case AuthTextFieldType.password:
         return TextInputType.text;
+      case AuthTextFieldType.number:
+        return TextInputType.number;
     }
   }
 
@@ -106,6 +112,8 @@ class _AuthTextFieldState extends State<AuthTextField> {
         } else {
           return null;
         }
+      case AuthTextFieldType.number:
+        return null;
     }
 
   }

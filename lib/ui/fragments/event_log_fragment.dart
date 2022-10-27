@@ -6,7 +6,6 @@ import 'package:service_admin/api/event_log_listener.dart';
 import 'package:service_admin/ui/item_layouts/event_item_layout.dart';
 import 'package:service_admin/ui/sections/device_section.dart';
 import 'package:service_admin/ui/widgets/chip_tab_bar.dart';
-import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 
 import '../../api/models/event_model.dart';
 
