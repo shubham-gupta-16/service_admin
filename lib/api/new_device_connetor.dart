@@ -19,7 +19,7 @@ class NewDeviceConnector {
   Future<bool> verifyCode(String code) async {
     final snapshot = await _dbRef.child(DbRef.connectionRequest).orderByChild("code").equalTo(code).get();
     if (!snapshot.exists) return false;
-    await _dbRef.child(DbRef.connectionRequest).child(snapshot.key!).update({
+    await _dbRef.child(DbRef.connectionRequest).child(snapshot.children.first.key!).update({
       "adminUid": auth.requireUid,
       "adminUsername": auth.requireUserName,
     });
