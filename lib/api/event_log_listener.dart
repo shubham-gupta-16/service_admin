@@ -32,10 +32,21 @@ class EventLogListener {
 
   String? globalDate;
   Future<void> setDate(int index, String date) async {
-    //todo if date is aaj ka date toh child event listener lagana hai
+
+    if(_ss != null){
+      _ss!.cancel();
+      _ss = null;
+    }
+
     globalDate = date;
     list.clear();
     _notify();
+
+    if(_isToday(date)){
+      _subscribeChildEvent();
+      return;
+    }
+
     final snapshot = await _dataRef.child(DbRef.logs).child(globalDate!)/*
         .orderByKey()
         .endBefore(model.timestampAsKey.toString()).limitToLast(_itemPerPage)*/.get();
@@ -49,6 +60,28 @@ class EventLogListener {
       }
       // list.add(EventModel.loader(list.last.timestampAsKey.toString()));
     _notify();
+  }
+
+  StreamSubscription? _ss;
+  void _subscribeChildEvent(){
+    _ss = _dataRef
+        .child(DbRef.logs)
+        .child(globalDate!)
+        /*.orderByKey()
+        .limitToLast(_itemPerPage)*/.onChildAdded.listen((event) {
+      if (event.snapshot.exists) {
+        if (list.isEmpty) {
+          // list.add(EventModel.loader(event.snapshot.key!));
+        }
+        list.insert(0, EventModel.fromSnapshot(event.snapshot));
+        _notify();
+      }
+    });
+  }
+
+  void close() {
+    _ss?.cancel();
+    _controller?.close();
   }
 
   void _notify(){
@@ -91,6 +124,10 @@ class EventLogListener {
     return df.format(DateTime.fromMillisecondsSinceEpoch(e.timestampAsKey));
   }
 
+  bool _isToday(String date){
+    return df.format(DateTime.now()) == date;
+  }
+
   //for pagination future plan
   /*Future<void> loadMore() async {
     if (list.length < 1) return;
@@ -116,8 +153,4 @@ class EventLogListener {
       _notify();
     }
   }*/
-
-  void close() {
-    _controller?.close();
-  }
 }

@@ -31,6 +31,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
     final text = _textEditingController.text;
     if (text.length == 6){
       final res = await connector.verifyCode(text);
+      //todo show loader
       print(res);
       if (res){
         if(!mounted) return;

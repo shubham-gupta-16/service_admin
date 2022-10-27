@@ -111,20 +111,17 @@ class _EventListViewState extends State<_EventListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      interactive: true,
-      child: ListView.builder(
-        controller: controller,
-        reverse: true,
-        itemBuilder: (context, index) {
-          final eventModel = widget.list[index];
-          return EventItemLayout(
-            eventModel: eventModel,
-            onPressed: () {},
-          );
-        },
-        itemCount: widget.list.length,
-      ),
+    return ListView.builder(
+      controller: controller,
+      reverse: true,
+      itemBuilder: (context, index) {
+        final eventModel = widget.list[index];
+        return EventItemLayout(
+          eventModel: eventModel,
+          onPressed: () {},
+        );
+      },
+      itemCount: widget.list.length,
     );
   }
 }
