@@ -40,10 +40,11 @@ extension FirebaseQuery on Query {
       bool Function(T p1, T p2)? finder}) {
     final streamController = StreamController<List<T>>();
     final List<T> list = [];
+    print("ca added");
     final ca = onChildEventListener(ChildEventListener(
       onChildAdded: (snapshot) {
         list.add(converter(snapshot));
-        print('got');
+        print('stream -> added: ${snapshot.value}');
         streamController.add(list);
       },
       onChildChanged: (finder !=null) ? (snapshot) {
@@ -51,11 +52,13 @@ extension FirebaseQuery on Query {
         final i = list.indexWhere((element) => finder(element, model));
         if (i >= 0){
           list[i] = model;
+          print('stream -> changed: ${snapshot.value}');
           streamController.add(list);
         }
       } : null,
     ));
     streamController.onCancel = () {
+      print("ca removed");
       ca.cancel();
     };
     return streamController;

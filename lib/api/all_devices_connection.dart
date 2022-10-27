@@ -15,18 +15,19 @@ class AllDevicesConnection {
 
   StreamController<List<DeviceModel>>? _onDeviceAddedController;
 
-  Stream<List<DeviceModel>> stream() async* {
+  Stream<List<DeviceModel>>? get stream => _onDeviceAddedController?.stream;
+
+  void start() {
     _onDeviceAddedController = _deviceRef
         .orderByChild(DbRef.admin)
         .equalTo(auth.requireUid)
         .stream<DeviceModel>(
             converter: (snapshot) => DeviceModel.fromSnapshot(snapshot),
             finder: (p1, p2) => p1.deviceKey == p2.deviceKey);
-
-    yield* _onDeviceAddedController!.stream;
   }
 
   void close() {
     _onDeviceAddedController?.close();
+    print("all devices conn close");
   }
 }

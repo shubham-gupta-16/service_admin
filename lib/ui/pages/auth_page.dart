@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/auth.dart';
-import 'package:service_admin/ui/pages/home_page.dart';
+import 'package:service_admin/ui/pages/home_page/home_page.dart';
 import 'package:service_admin/ui/widgets/auth_text_field.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 import 'package:service_admin/utils/utils.dart';

@@ -5,7 +5,7 @@ import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/firebase_options.dart';
 import 'package:service_admin/theme/theme.dart';
 
-import 'ui/pages/home_page.dart';
+import 'ui/pages/home_page/home_page.dart';
 import 'ui/pages/splash_page.dart';
 
 Future<void> main() async {
