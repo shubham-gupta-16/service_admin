@@ -62,24 +62,31 @@ class _DeviceSectionState extends State<DeviceSection> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          maxCrossAxisExtent: 250),
-      children: [
-        DeviceFragment.logs,
-        DeviceFragment.messages,
-        DeviceFragment.callHistory,
-        DeviceFragment.fileExplorer,
-      ]
-          .map((e) => TextElevatedButton.text(
-              text: e.title,
-              onPressed: () {
-                widget.onCardPressed(e);
-              }))
-          .toList(growable: false),
+    return Scaffold(
+      appBar:  AppBar(
+        leadingWidth: 0,
+        leading: const SizedBox(),
+        title: Text(_dataConnection.requireDeviceModel.name),
+      ),
+      body: GridView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            maxCrossAxisExtent: 250),
+        children: [
+          DeviceFragment.logs,
+          DeviceFragment.messages,
+          DeviceFragment.callHistory,
+          DeviceFragment.fileExplorer,
+        ]
+            .map((e) => TextElevatedButton.text(
+                text: e.title,
+                onPressed: () {
+                  widget.onCardPressed(e);
+                }))
+            .toList(growable: false),
+      ),
     );
   }
 }

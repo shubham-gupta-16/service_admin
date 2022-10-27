@@ -48,9 +48,6 @@ class _DevicePageState extends State<DevicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: fragment == null ? AppBar(
-        title: Text(_dataConnection.requireDeviceModel.name),
-      ) : null,
       resizeToAvoidBottomInset: true,
       body: Column(
         children: [
@@ -60,7 +57,13 @@ class _DevicePageState extends State<DevicePage> {
                 DeviceSection(onCardPressed: (fragment) {
                   switchFragment(fragment);
                 },),
-                fragment?.widget ?? const SizedBox()
+                AnimatedSwitcher(duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  print(animation);
+                  return ScaleTransition(scale: animation,
+                  child: FadeTransition(opacity: animation, child: child,));
+                },
+                child: fragment?.widget ?? const SizedBox(),)
               ],
             ),
           ),

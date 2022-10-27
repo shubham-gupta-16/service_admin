@@ -27,6 +27,7 @@ class ChildEventListener {
       this.onChildRemoved});
 
   void cancel() {
+    print("child event listener cancel");
     onChildAddedSubs?.cancel();
     onChildChangedSubs?.cancel();
     onChildMovedSubs?.cancel();
