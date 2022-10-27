@@ -74,7 +74,7 @@ class _DeviceSectionState extends State<DeviceSection> {
         DeviceFragment.callHistory,
         DeviceFragment.fileExplorer,
       ]
-          .map((e) => TextElevatedButton(
+          .map((e) => TextElevatedButton.text(
               text: e.title,
               onPressed: () {
                 widget.onCardPressed(e);

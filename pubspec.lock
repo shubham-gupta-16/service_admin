@@ -64,13 +64,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  easy_sticky_header:
-    dependency: "direct main"
-    description:
-      name: easy_sticky_header
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.4"
   fake_async:
     dependency: transitive
     description:
@@ -167,20 +160,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  flutter_sticky_header:
-    dependency: "direct main"
-    description:
-      name: flutter_sticky_header
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.4"
-  flutter_sticky_section_list:
-    dependency: "direct main"
-    description:
-      name: flutter_sticky_section_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -198,13 +177,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.2.0"
-  grouped_list:
-    dependency: "direct main"
-    description:
-      name: grouped_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.1.2"
   http_parser:
     dependency: transitive
     description:
@@ -268,20 +240,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
-  scrollable_positioned_list:
-    dependency: "direct main"
-    description:
-      name: scrollable_positioned_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.5"
-  simple_grouped_listview:
-    dependency: "direct main"
-    description:
-      name: simple_grouped_listview
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -301,34 +259,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
-  sticky_footer_scrollview:
-    dependency: "direct main"
-    description:
-      name: sticky_footer_scrollview
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.1"
-  sticky_grouped_list:
-    dependency: "direct main"
-    description:
-      name: sticky_grouped_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
-  sticky_headers:
-    dependency: "direct main"
-    description:
-      name: sticky_headers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0+2"
-  sticky_infinite_list:
-    dependency: "direct main"
-    description:
-      name: sticky_infinite_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.1"
   stream_channel:
     dependency: transitive
     description:
@@ -420,13 +350,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  value_layout_builder:
-    dependency: transitive
-    description:
-      name: value_layout_builder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1"
   vector_math:
     dependency: transitive
     description:
@@ -434,13 +357,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  visibility_detector:
-    dependency: "direct main"
-    description:
-      name: visibility_detector
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.3"
 sdks:
   dart: ">=2.18.1 <3.0.0"
   flutter: ">=3.3.0"

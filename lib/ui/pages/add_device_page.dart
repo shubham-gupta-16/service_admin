@@ -38,7 +38,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Center(
-                    child: TextElevatedButton(
+                    child: TextElevatedButton.text(
                   text: snapshot.requireData.toString(),
                   onPressed: () async {
                     await Clipboard.setData(ClipboardData(text: snapshot.requireData.toString()));

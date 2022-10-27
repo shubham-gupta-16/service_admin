@@ -44,18 +44,6 @@ dependencies:
   firebase_auth: ^3.11.2
   url_launcher: ^6.1.6
 
-  flutter_sticky_header: ^0.6.4
-  sticky_headers: ^0.3.0+2
-  sticky_grouped_list: ^3.1.0
-  grouped_list: ^5.1.2
-  simple_grouped_listview: ^1.0.1
-  easy_sticky_header: ^1.0.4
-  sticky_infinite_list: ^4.0.1
-  sticky_footer_scrollview: ^1.1.1
-  flutter_sticky_section_list: ^1.0.1
-
-  scrollable_positioned_list: ^0.3.5
-  visibility_detector: ^0.3.3
 
 dev_dependencies:
   flutter_test:

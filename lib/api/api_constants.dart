@@ -7,6 +7,7 @@ abstract class DbRef{
   static const devices = "devices";
   static const data = "data";
   static const logs = "logs";
+  static const logsIndex = "logs_index";
   static const command = "cmd";
   static const commandReply = "cmd_reply";
   static const connectionRequests = "conn_requests";

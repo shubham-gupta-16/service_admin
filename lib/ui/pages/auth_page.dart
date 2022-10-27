@@ -110,7 +110,7 @@ class __LoginFromState extends State<_LoginFrom> {
           ),
           const SizedBox(height: 20),
           //---------------- LOGIN BUTTON ------------------------
-          TextElevatedButton(
+          TextElevatedButton.text(
               text: 'Login',
               width: double.infinity,
               height: 50,
