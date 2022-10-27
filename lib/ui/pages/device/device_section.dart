@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 
-import '../../api/di/locator.dart';
-import '../fragments/event_log_fragment.dart';
-import '../widgets/text_elevated_button.dart';
+import '../../../api/di/locator.dart';
+import '../../widgets/text_elevated_button.dart';
+import 'fragments/event_log_fragment.dart';
 
 enum DeviceFragment {
   logs,
@@ -32,11 +32,11 @@ extension DeviceFragmentExt on DeviceFragment {
       case DeviceFragment.logs:
         return const EventLogFragment();
       case DeviceFragment.messages:
-        return const EventLogFragment();
+        return const SizedBox();
       case DeviceFragment.callHistory:
-        return const EventLogFragment();
+        return const SizedBox();
       case DeviceFragment.fileExplorer:
-        return const EventLogFragment();
+        return const SizedBox();
     }
   }
 }

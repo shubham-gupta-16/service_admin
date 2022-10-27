@@ -6,7 +6,7 @@ import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 import 'package:service_admin/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../api/di/locator.dart';
+import '../../../api/di/locator.dart';
 
 class AddDevicePage extends StatefulWidget {
   const AddDevicePage({Key? key}) : super(key: key);

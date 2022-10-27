@@ -6,12 +6,12 @@ import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/api/models/device_model.dart';
 import 'package:service_admin/ui/item_layouts/device_item_layout.dart';
-import 'package:service_admin/ui/pages/add_device_page.dart';
-import 'package:service_admin/ui/pages/auth_page.dart';
-import 'package:service_admin/ui/pages/device_page.dart';
-import 'package:service_admin/ui/pages/home_page/mobile_home_page.dart';
-import 'package:service_admin/ui/pages/home_page/providers/device_update_provider.dart';
-import 'package:service_admin/ui/pages/home_page/common_all_device_list_section.dart';
+import 'package:service_admin/ui/pages/add_device/add_device_page.dart';
+import 'package:service_admin/ui/pages/login/auth_page.dart';
+import 'package:service_admin/ui/pages/device/device_page.dart';
+import 'package:service_admin/ui/pages/home/mobile_home_page.dart';
+import 'package:service_admin/ui/pages/home/providers/device_update_provider.dart';
+import 'package:service_admin/ui/pages/home/common_all_device_list_section.dart';
 import 'package:service_admin/utils/utils.dart';
 
 import 'web_home_page.dart';

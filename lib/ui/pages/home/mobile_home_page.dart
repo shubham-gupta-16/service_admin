@@ -5,9 +5,9 @@ import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/utils/utils.dart';
 
 import '../../widgets/stack_page_transition.dart';
-import '../add_device_page.dart';
-import '../auth_page.dart';
-import '../device_page.dart';
+import '../add_device/add_device_page.dart';
+import '../login/auth_page.dart';
+import '../device/device_page.dart';
 import 'common_all_device_list_section.dart';
 import 'providers/device_update_provider.dart';
 

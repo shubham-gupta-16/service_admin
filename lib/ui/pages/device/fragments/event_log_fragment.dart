@@ -4,10 +4,11 @@ import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/api/event_log_listener.dart';
 import 'package:service_admin/ui/item_layouts/event_item_layout.dart';
-import 'package:service_admin/ui/sections/device_section.dart';
+import 'package:service_admin/ui/pages/device/device_section.dart';
 import 'package:service_admin/ui/widgets/chip_tab_bar.dart';
 
-import '../../api/models/event_model.dart';
+import '../../../../api/models/event_model.dart';
+
 
 class EventLogFragment extends StatefulWidget {
   const EventLogFragment({Key? key}) : super(key: key);
