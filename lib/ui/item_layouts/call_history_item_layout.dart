@@ -22,9 +22,12 @@ class CallHistoryItemLayout extends StatelessWidget {
         getIcon(model.type),
         color: getIconColor(model.type),
       ),
+      onLongPress: (){
+        context.showSnackBar(model.number);
+      },
       title: Text(model.tempName ?? model.number),
       subtitle: Text(
-          "${model.duration.formatDuration()} - ${model.timestamp.formatDate()}"),
+          "${model.duration.formatDuration()} - ${model.timestamp.displayDate()}"),
     );
   }
 

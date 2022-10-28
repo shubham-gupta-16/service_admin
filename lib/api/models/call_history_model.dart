@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:service_admin/api/utils.dart';
 
 import 'volume_model.dart';
 
@@ -17,9 +18,9 @@ class CallHistoryModel {
       int.parse(keyData[0]),
       int.parse(keyData[1]),
       int.parse(keyData[2]) * 1000,
-      keyData[3],
+      keyData[3].decode(),
       int.parse(keyData[4]),
-      tempName.isNotEmpty ? tempName : null,
+      tempName.isNotEmpty ? tempName.decode() : null,
     );
   }
 

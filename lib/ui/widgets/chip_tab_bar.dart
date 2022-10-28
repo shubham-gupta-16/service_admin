@@ -64,7 +64,8 @@ class _ChipTabBarState extends State<ChipTabBar> {
   @override
   Widget build(BuildContext context) {
     if (widget.tabs.isEmpty) return const SizedBox();
-    return SizedBox(
+    return Container(
+      color: Theme.of(context).colorScheme.background,
       width: double.infinity,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
