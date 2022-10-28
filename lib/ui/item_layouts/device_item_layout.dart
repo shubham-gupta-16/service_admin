@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/models/device_model.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/ui/ui_utils.dart';
 
 class DeviceItemLayout extends StatelessWidget {
   final DeviceModel deviceModel;

@@ -48,15 +48,17 @@ extension FirebaseQuery on Query {
         print('stream -> added: ${snapshot.value}');
         streamController.add(list);
       },
-      onChildChanged: (finder !=null) ? (snapshot) {
-        final model = converter(snapshot);
-        final i = list.indexWhere((element) => finder(element, model));
-        if (i >= 0){
-          list[i] = model;
-          print('stream -> changed: ${snapshot.value}');
-          streamController.add(list);
-        }
-      } : null,
+      onChildChanged: (finder != null)
+          ? (snapshot) {
+              final model = converter(snapshot);
+              final i = list.indexWhere((element) => finder(element, model));
+              if (i >= 0) {
+                list[i] = model;
+                print('stream -> changed: ${snapshot.value}');
+                streamController.add(list);
+              }
+            }
+          : null,
     ));
     streamController.onCancel = () {
       print("ca removed");

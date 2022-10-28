@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
 
 class StackPageTransition extends StatelessWidget {
   final Widget child;
   final Widget? overlayChild;
-  const StackPageTransition({Key? key, required this.overlayChild, required this.child}) : super(key: key);
+  const StackPageTransition(
+      {Key? key, required this.overlayChild, required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,7 @@ class StackPageTransition extends StatelessWidget {
             return FadeTransition(
               opacity: animation,
               child: ScaleTransition(
-                  scale: Tween<double>(begin: 0.8, end: 1)
-                      .animate(animation),
+                  scale: Tween<double>(begin: 0.8, end: 1).animate(animation),
                   child: child),
             );
           },

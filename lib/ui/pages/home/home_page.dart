@@ -12,7 +12,7 @@ import 'package:service_admin/ui/pages/device/device_page.dart';
 import 'package:service_admin/ui/pages/home/mobile_home_page.dart';
 import 'package:service_admin/ui/pages/home/providers/device_update_provider.dart';
 import 'package:service_admin/ui/pages/home/common_all_device_list_section.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/api/utils.dart';
 
 import 'web_home_page.dart';
 
@@ -46,6 +46,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-

@@ -6,7 +6,8 @@ import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/api/models/device_model.dart';
 import 'package:service_admin/ui/item_layouts/device_item_layout.dart';
 import 'package:service_admin/ui/pages/device/device_page.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/ui/ui_utils.dart';
 
 import 'providers/device_update_provider.dart';
 
@@ -16,10 +17,12 @@ class CommonAllDeviceListSection extends StatefulWidget {
   const CommonAllDeviceListSection({super.key, required this.isDesktop});
 
   @override
-  State<CommonAllDeviceListSection> createState() => _CommonAllDeviceListSectionState();
+  State<CommonAllDeviceListSection> createState() =>
+      _CommonAllDeviceListSectionState();
 }
 
-class _CommonAllDeviceListSectionState extends State<CommonAllDeviceListSection> {
+class _CommonAllDeviceListSectionState
+    extends State<CommonAllDeviceListSection> {
   late AllDevicesConnection connection;
 
   @override
@@ -42,21 +45,25 @@ class _CommonAllDeviceListSectionState extends State<CommonAllDeviceListSection>
     return StreamBuilder(
         stream: connection.stream,
         builder: (context, snapshot) {
-          if (snapshot.data == null || snapshot.requireData.isEmpty){
+          if (snapshot.data == null || snapshot.requireData.isEmpty) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          return _DevicesListView(list: snapshot.requireData, isDesktop: widget.isDesktop,);
+          return _DevicesListView(
+            list: snapshot.requireData,
+            isDesktop: widget.isDesktop,
+          );
         });
   }
 }
 
 class _DevicesListView extends StatelessWidget {
-
   final List<DeviceModel> list;
   final bool isDesktop;
-  const _DevicesListView({Key? key, required this.list, required this.isDesktop}) : super(key: key);
+  const _DevicesListView(
+      {Key? key, required this.list, required this.isDesktop})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +75,14 @@ class _DevicesListView extends StatelessWidget {
         final deviceModel = list[index];
         return DeviceItemLayout(
           deviceModel: deviceModel,
-          isSelected: isDesktop && deviceModel.deviceKey ==
-              deviceUpdateProvider.deviceModel?.deviceKey,
+          isSelected: isDesktop &&
+              deviceModel.deviceKey ==
+                  deviceUpdateProvider.deviceModel?.deviceKey,
           onPressed: () {
             print("pressed -> $deviceModel");
             dataConn.setDevice(deviceModel);
             deviceUpdateProvider.setDevice(deviceModel);
-            if (!isDesktop){
+            if (!isDesktop) {
               context.navigatePush(DevicePage(isDesktop: isDesktop));
             }
           },

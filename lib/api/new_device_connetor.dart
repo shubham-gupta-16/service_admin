@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:math';
 
@@ -17,16 +16,23 @@ class NewDeviceConnector {
   String? _key;
 
   Future<bool> verifyCode(String code) async {
-    final snapshot = await _dbRef.child(DbRef.connectionRequest).orderByChild("code").equalTo(code).get();
+    final snapshot = await _dbRef
+        .child(DbRef.connectionRequest)
+        .orderByChild("code")
+        .equalTo(code)
+        .get();
     if (!snapshot.exists) return false;
-    await _dbRef.child(DbRef.connectionRequest).child(snapshot.children.first.key!).update({
+    await _dbRef
+        .child(DbRef.connectionRequest)
+        .child(snapshot.children.first.key!)
+        .update({
       "adminUid": auth.requireUid,
       "adminUsername": auth.requireUserName,
     });
     return true;
   }
 
-  Future<int> createNewLink()  async {
+  Future<int> createNewLink() async {
     final code = _random.nextInt(899999) + 100000;
     final Completer<int> completer = Completer();
     await close();
@@ -37,16 +43,15 @@ class NewDeviceConnector {
       "createdOn": DateTime.now().millisecondsSinceEpoch
     }).then((_) {
       completer.complete(code);
-    }).catchError((err){
+    }).catchError((err) {
       completer.completeError(err.toString());
     });
     return completer.future;
   }
 
   Future<void> close() async {
-    if(_key == null) return;
+    if (_key == null) return;
     await _dbRef.child(DbRef.connectionRequest).child(_key!).remove();
     _key = null;
   }
-
 }

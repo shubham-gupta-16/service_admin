@@ -1,12 +1,10 @@
-
-
 import 'package:flutter/foundation.dart';
 import 'package:service_admin/api/models/device_model.dart';
 
-class DeviceUpdateProvider extends ChangeNotifier{
+class DeviceUpdateProvider extends ChangeNotifier {
   DeviceModel? _deviceModel;
 
-  setDevice(DeviceModel? deviceModel){
+  setDevice(DeviceModel? deviceModel) {
     _deviceModel = deviceModel;
     notifyListeners();
   }
@@ -14,5 +12,4 @@ class DeviceUpdateProvider extends ChangeNotifier{
   bool get hasDeviceModel => _deviceModel != null;
   DeviceModel? get deviceModel => _deviceModel;
   DeviceModel get requireDeviceModel => _deviceModel!;
-
 }

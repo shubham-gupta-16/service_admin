@@ -1,10 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
 
 class EventsDateModel {
   final String date;
@@ -13,12 +13,13 @@ class EventsDateModel {
   EventsDateModel(this.date, this.count);
 
   factory EventsDateModel.fromSnapshot(DataSnapshot snapshot) =>
-      EventsDateModel(
-          snapshot.key!, snapshot.child("text").value as int? ?? 0);
+      EventsDateModel(snapshot.key!, snapshot.child("text").value as int? ?? 0);
 
   @override
   String toString() {
-    return {"date": date, "count": count,}
-        .toString();
+    return {
+      "date": date,
+      "count": count,
+    }.toString();
   }
 }

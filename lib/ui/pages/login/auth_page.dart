@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/ui/pages/home/home_page.dart';
+import 'package:service_admin/ui/ui_utils.dart';
 import 'package:service_admin/ui/widgets/auth_text_field.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/api/utils.dart';
 
 import '../../../api/di/locator.dart';
 
@@ -29,9 +30,11 @@ class _AuthPageState extends State<AuthPage> {
       appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: _LoginFrom(callback: (String username, String password) {
-          return auth.login(username, password);
-        },),
+        child: _LoginFrom(
+          callback: (String username, String password) {
+            return auth.login(username, password);
+          },
+        ),
       ),
     );
   }
@@ -46,7 +49,6 @@ class _LoginFrom extends StatefulWidget {
 }
 
 class __LoginFromState extends State<_LoginFrom> {
-
   late TextEditingController emailController;
   late TextEditingController passwordController;
   final _formKey = GlobalKey<FormState>();
@@ -101,12 +103,12 @@ class __LoginFromState extends State<_LoginFrom> {
           const SizedBox(height: 20),
           //---------------- FORGET PASSWORD ------------------------
           Align(
-              alignment: Alignment.topRight,
-              child: Text(
-                "Forgot Password?",
-                style: TextStyle(
-                    fontSize: 15, color: Theme.of(context).colorScheme.primary),
-              ),
+            alignment: Alignment.topRight,
+            child: Text(
+              "Forgot Password?",
+              style: TextStyle(
+                  fontSize: 15, color: Theme.of(context).colorScheme.primary),
+            ),
           ),
           const SizedBox(height: 20),
           //---------------- LOGIN BUTTON ------------------------
@@ -118,10 +120,12 @@ class __LoginFromState extends State<_LoginFrom> {
                 print('login pressed');
                 if (_formKey.currentState!.validate()) {
                   context.showLoaderDialog();
-                  final code = await widget.callback(emailController.text.trim(), passwordController.text.trim());
+                  final code = await widget.callback(
+                      emailController.text.trim(),
+                      passwordController.text.trim());
                   if (!mounted) return;
                   context.navigatePop();
-                  if(code == AuthCode.success){
+                  if (code == AuthCode.success) {
                     context.navigatePushReplace(const HomePage());
                   } else {
                     print(code.name);
@@ -139,7 +143,7 @@ class __LoginFromState extends State<_LoginFrom> {
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
-                *//*defining default style is optional *//*
+                */ /*defining default style is optional */ /*
                 children: <TextSpan>[
                   TextSpan(
                       text: ' Sign up',

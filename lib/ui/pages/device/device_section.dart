@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
+import 'package:service_admin/ui/pages/device/fragments/call_history_fragment.dart';
 
 import '../../../api/di/locator.dart';
 import '../../widgets/text_elevated_button.dart';
@@ -34,7 +34,7 @@ extension DeviceFragmentExt on DeviceFragment {
       case DeviceFragment.messages:
         return const SizedBox();
       case DeviceFragment.callHistory:
-        return const SizedBox();
+        return const CallHistoryFragment();
       case DeviceFragment.fileExplorer:
         return const SizedBox();
     }
@@ -44,7 +44,8 @@ extension DeviceFragmentExt on DeviceFragment {
 class DeviceSection extends StatefulWidget {
   final void Function(DeviceFragment fragment) onCardPressed;
   final bool isDesktop;
-  const DeviceSection({Key? key, required this.onCardPressed, required this.isDesktop})
+  const DeviceSection(
+      {Key? key, required this.onCardPressed, required this.isDesktop})
       : super(key: key);
 
   @override
@@ -63,17 +64,15 @@ class _DeviceSectionState extends State<DeviceSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(
+      appBar: AppBar(
         leadingWidth: widget.isDesktop ? 0 : null,
-        leading:widget.isDesktop ? const SizedBox(): null,
+        leading: widget.isDesktop ? const SizedBox() : null,
         title: Text(_dataConnection.requireDeviceModel.name),
       ),
       body: GridView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            maxCrossAxisExtent: 250),
+            mainAxisSpacing: 10, crossAxisSpacing: 10, maxCrossAxisExtent: 250),
         children: [
           DeviceFragment.logs,
           DeviceFragment.messages,

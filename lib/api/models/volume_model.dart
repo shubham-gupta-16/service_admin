@@ -8,7 +8,8 @@ class VolumeModel {
   final int notification;
   final int system;
 
-  VolumeModel(this.music, this.call, this.alarm, this.ring, this.notification, this.system);
+  VolumeModel(this.music, this.call, this.alarm, this.ring, this.notification,
+      this.system);
 
   factory VolumeModel.fromSnapshot(DataSnapshot snapshot) {
     return VolumeModel(

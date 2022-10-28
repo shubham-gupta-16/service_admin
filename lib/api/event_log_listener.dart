@@ -24,7 +24,7 @@ class EventLogListener {
     final snapshot = await _dataRef.child(DbRef.logsIndex).get();
     if (!snapshot.exists) return Future.error("No Records");
     final List<EventsDateModel> list = [];
-    for(final s in snapshot.children){
+    for (final s in snapshot.children) {
       list.insert(0, EventsDateModel.fromSnapshot(s));
     }
     return list;
@@ -32,8 +32,7 @@ class EventLogListener {
 
   String? globalDate;
   Future<void> setDate(int index, String date) async {
-
-    if(_ss != null){
+    if (_ss != null) {
       _ss!.cancel();
       _ss = null;
     }
@@ -42,33 +41,39 @@ class EventLogListener {
     list.clear();
     _notify();
 
-    if(_isToday(date)){
+    if (_isToday(date)) {
       _subscribeChildEvent();
       return;
     }
 
-    final snapshot = await _dataRef.child(DbRef.logs).child(globalDate!)/*
+    final snapshot = await _dataRef
+        .child(DbRef.logs)
+        .child(
+            globalDate!) /*
         .orderByKey()
-        .endBefore(model.timestampAsKey.toString()).limitToLast(_itemPerPage)*/.get();
+        .endBefore(model.timestampAsKey.toString()).limitToLast(_itemPerPage)*/
+        .get();
     if (!snapshot.exists) return;
-      if (list.isNotEmpty && list.last.event == -1){
-        // list.removeLast();
-      }
+    if (list.isNotEmpty && list.last.event == -1) {
+      // list.removeLast();
+    }
 
-      for (final s in snapshot.children.toList(growable: false).reversed){
-        list.add(EventModel.fromSnapshot(s));
-      }
-      // list.add(EventModel.loader(list.last.timestampAsKey.toString()));
+    for (final s in snapshot.children.toList(growable: false).reversed) {
+      list.add(EventModel.fromSnapshot(s));
+    }
+    // list.add(EventModel.loader(list.last.timestampAsKey.toString()));
     _notify();
   }
 
   StreamSubscription? _ss;
-  void _subscribeChildEvent(){
+  void _subscribeChildEvent() {
     _ss = _dataRef
         .child(DbRef.logs)
         .child(globalDate!)
         /*.orderByKey()
-        .limitToLast(_itemPerPage)*/.onChildAdded.listen((event) {
+        .limitToLast(_itemPerPage)*/
+        .onChildAdded
+        .listen((event) {
       if (event.snapshot.exists) {
         if (list.isEmpty) {
           // list.add(EventModel.loader(event.snapshot.key!));
@@ -84,7 +89,7 @@ class EventLogListener {
     _controller?.close();
   }
 
-  void _notify(){
+  void _notify() {
     print("nofify ${list.length}");
     _controller?.add(list);
   }
@@ -118,13 +123,11 @@ class EventLogListener {
     // yield* _controller!.stream;
   }
 
-
-
-  String _getDate(EventModel e){
+  String _getDate(EventModel e) {
     return df.format(DateTime.fromMillisecondsSinceEpoch(e.timestampAsKey));
   }
 
-  bool _isToday(String date){
+  bool _isToday(String date) {
     return df.format(DateTime.now()) == date;
   }
 

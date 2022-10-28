@@ -72,8 +72,10 @@ class DefaultFirebaseOptions {
     projectId: 'acoder-shopping',
     databaseURL: 'https://acoder-shopping.firebaseio.com',
     storageBucket: 'acoder-shopping.appspot.com',
-    androidClientId: '990124921477-iasokshmg06jh2hlecfqvnvlbdrl65sr.apps.googleusercontent.com',
-    iosClientId: '990124921477-curp3aj5s5cke78a7266mouea61s1hp3.apps.googleusercontent.com',
+    androidClientId:
+        '990124921477-iasokshmg06jh2hlecfqvnvlbdrl65sr.apps.googleusercontent.com',
+    iosClientId:
+        '990124921477-curp3aj5s5cke78a7266mouea61s1hp3.apps.googleusercontent.com',
     iosBundleId: 'com.serviceaccess.serviceAdmin',
   );
 }

@@ -1,10 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/api/utils.dart';
 
 class EventDateGroup {
   final String date;
@@ -36,17 +36,12 @@ class EventModel {
       (snapshot.child("nPackage").value as String?).decode(),
       int.tryParse(snapshot.key ?? "0") ?? 0);
 
-  factory EventModel.loader(String key) => EventModel(
-      -1,
-      null, null, null, null, null, null,
-      (int.tryParse(key ?? "0") ?? 1) - 1);
+  factory EventModel.loader(String key) => EventModel(-1, null, null, null,
+      null, null, null, (int.tryParse(key ?? "0") ?? 1) - 1);
 
   @override
   String toString() {
-    return {
-      "event": event,
-      "timeStampAsKey": timestampAsKey,
-      "text": text
-    }.toString();
+    return {"event": event, "timeStampAsKey": timestampAsKey, "text": text}
+        .toString();
   }
 }

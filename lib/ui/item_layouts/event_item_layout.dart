@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:service_admin/api/models/device_model.dart';
-import 'package:service_admin/utils/utils.dart';
-
+import 'package:service_admin/ui/ui_utils.dart';
 import '../../api/models/event_model.dart';
 
 class EventItemLayout extends StatelessWidget {
@@ -31,13 +29,15 @@ class EventItemLayout extends StatelessWidget {
             child: Container(
               width: 5,
               decoration: BoxDecoration(
-                  color: getEventColor(eventModel.event).withOpacity(0.8), borderRadius: BorderRadius.circular(4)),
+                  color: getEventColor(eventModel.event).withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(4)),
             ),
           ),
           Container(
             width: double.infinity,
             color: getEventColor(eventModel.event).withOpacity(0.03),
-            padding: const EdgeInsets.only(right: 20, top: 20, bottom: 20,left: 25),
+            padding:
+                const EdgeInsets.only(right: 20, top: 20, bottom: 20, left: 25),
             child: Text(
               "${eventModel.text ?? ''} - ${eventModel.desc ?? ''}",
               style: Theme.of(context).textTheme.bodyLarge,

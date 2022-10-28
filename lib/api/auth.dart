@@ -39,7 +39,6 @@ class Auth {
       print(e);
       return AuthCode.error;
     }
-
   }
 
   Future<AuthCode> signup(String username, String password) async {
@@ -64,6 +63,5 @@ class Auth {
     auth.signOut();
   }
 
-  String _toEmail(String username)=> "$username@service.access";
-
+  String _toEmail(String username) => "$username@service.access";
 }

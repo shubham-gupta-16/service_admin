@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/ui/pages/login/auth_page.dart';
 import 'package:service_admin/ui/pages/home/home_page.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/ui/ui_utils.dart';
 
 import '../../../api/auth.dart';
 import '../../../api/di/locator.dart';
@@ -21,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
     auth = locator();
     super.initState();
 
-     WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(seconds: 2));
       if (!mounted) return;
       if (auth.hasCurrentUser) {
@@ -51,53 +52,65 @@ class _SplashPageState extends State<SplashPage> {
     // );
   }
 
-  Widget buildResponiveColorData()=>SingleChildScrollView(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              namedContainer("primary", child: namedContainer("onPrimary", width: 100)),
-              namedContainer("secondary", child: namedContainer("onSecondary", width: 100)),
-              namedContainer("tertiary", child: namedContainer("onTertiary", width: 100)),
-              namedContainer("error", child: namedContainer("onError", width: 100)),
-              namedContainer("background", child: namedContainer("onBackground", width: 100)),
-              namedContainer("surface", child: namedContainer("onSurface", width: 100)),
-              namedContainer("surfaceVariant", child: namedContainer("onSurfaceVariant", width: 100)),
-              namedContainer("inverseSurface", child: namedContainer("onInverseSurface", width: 100)),
-            ],
-          ),
+  Widget buildResponiveColorData() => SingleChildScrollView(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  namedContainer("primary",
+                      child: namedContainer("onPrimary", width: 100)),
+                  namedContainer("secondary",
+                      child: namedContainer("onSecondary", width: 100)),
+                  namedContainer("tertiary",
+                      child: namedContainer("onTertiary", width: 100)),
+                  namedContainer("error",
+                      child: namedContainer("onError", width: 100)),
+                  namedContainer("background",
+                      child: namedContainer("onBackground", width: 100)),
+                  namedContainer("surface",
+                      child: namedContainer("onSurface", width: 100)),
+                  namedContainer("surfaceVariant",
+                      child: namedContainer("onSurfaceVariant", width: 100)),
+                  namedContainer("inverseSurface",
+                      child: namedContainer("onInverseSurface", width: 100)),
+                ],
+              ),
+            ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  namedContainer("primaryContainer",
+                      child: namedContainer("onPrimaryContainer", width: 100)),
+                  namedContainer("secondaryContainer",
+                      child:
+                          namedContainer("onSecondaryContainer", width: 100)),
+                  namedContainer("tertiaryContainer",
+                      child: namedContainer("onTertiaryContainer", width: 100)),
+                  namedContainer("errorContainer",
+                      child: namedContainer("onErrorContainer", width: 100)),
+                  namedContainer("inversePrimary"),
+                  namedContainer("shadow"),
+                  namedContainer("outline"),
+                ],
+              ),
+            )
+          ],
         ),
-        Flexible(
-          child:
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              namedContainer("primaryContainer", child: namedContainer("onPrimaryContainer", width: 100)),
-              namedContainer("secondaryContainer", child: namedContainer("onSecondaryContainer", width: 100)),
-              namedContainer("tertiaryContainer", child: namedContainer("onTertiaryContainer", width: 100)),
-              namedContainer("errorContainer", child: namedContainer("onErrorContainer", width: 100)),
-              namedContainer("inversePrimary"),
-              namedContainer("shadow"),
-              namedContainer("outline"),
-            ],
-          ),
-        )
-      ],
-    ),
-  );
+      );
 
-  Widget namedContainer(String name, {double? height, double? width, Widget? child}) {
+  Widget namedContainer(String name,
+      {double? height, double? width, Widget? child}) {
     Color? textColor;
 
-    if (name.startsWith("on")){
+    if (name.startsWith("on")) {
       textColor = _getColor(name.substring(2).nonCapitalize());
     } else {
       textColor = _getColor("on${name.capitalize()}");
     }
-
 
     return Container(
       color: _getColor(name),
@@ -111,9 +124,11 @@ class _SplashPageState extends State<SplashPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Center(child: Text(name, style: TextStyle(
-                color: textColor
-            ),)),
+            Center(
+                child: Text(
+              name,
+              style: TextStyle(color: textColor),
+            )),
             // if (name == 'primary') namedContainer("secondary"),
             if (child != null) child
           ],

@@ -9,7 +9,6 @@ import 'package:service_admin/ui/widgets/chip_tab_bar.dart';
 
 import '../../../../api/models/event_model.dart';
 
-
 class EventLogFragment extends StatefulWidget {
   const EventLogFragment({Key? key}) : super(key: key);
 
@@ -17,7 +16,7 @@ class EventLogFragment extends StatefulWidget {
   State<EventLogFragment> createState() => _EventLogFragmentState();
 }
 
-class _EventLogFragmentState extends State<EventLogFragment>{
+class _EventLogFragmentState extends State<EventLogFragment> {
   late DeviceDataConnection dataConnection;
   late EventLogListener eventLogListener;
   late ChipTabController chipTabController;
@@ -32,8 +31,6 @@ class _EventLogFragmentState extends State<EventLogFragment>{
     super.initState();
     eventLogListener.start();
   }
-
-
 
   @override
   void dispose() {
@@ -64,7 +61,8 @@ class _EventLogFragmentState extends State<EventLogFragment>{
                       .map((e) => Text(e.date))
                       .toList(growable: false),
                   onChange: (index) {
-                    eventLogListener.setDate(index, future.requireData[index].date);
+                    eventLogListener.setDate(
+                        index, future.requireData[index].date);
                   },
                 ),
                 Expanded(

@@ -35,10 +35,11 @@ class TextElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
             elevation: MaterialStateProperty.all(0),
-            backgroundColor: MaterialStateProperty.all(backgroundColor ?? Theme.of(context)
-                .colorScheme
-                .secondaryContainer
-                .withOpacity(0.5))),
+            backgroundColor: MaterialStateProperty.all(backgroundColor ??
+                Theme.of(context)
+                    .colorScheme
+                    .secondaryContainer
+                    .withOpacity(0.5))),
         onPressed: onPressed,
         child: child ?? (text != null ? Text(text!) : const SizedBox()),
       ),

@@ -16,13 +16,13 @@ class DeviceModel {
 
   factory DeviceModel.fromSnapshot(DataSnapshot snapshot) {
     return DeviceModel(
-        snapshot.key!.split("__")[0],
-        snapshot.child("name").value as String? ?? "No Name",
-        snapshot.child("status").value as int? ?? 0,
-        snapshot.child("createdOn").value as int? ?? 0,
-        snapshot.child("sim1").value?.toString() ?? "Unknown",
-        snapshot.child("sim2").value?.toString() ?? "Unknown",
-        VolumeModel.fromSnapshot(snapshot.child("volume")),
+      snapshot.key!.split("__")[0],
+      snapshot.child("name").value as String? ?? "No Name",
+      snapshot.child("status").value as int? ?? 0,
+      snapshot.child("createdOn").value as int? ?? 0,
+      snapshot.child("sim1").value?.toString() ?? "Unknown",
+      snapshot.child("sim2").value?.toString() ?? "Unknown",
+      VolumeModel.fromSnapshot(snapshot.child("volume")),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:service_admin/api/models/device_model.dart';
 
 import 'api_constants.dart';
 import 'auth.dart';
+import 'models/call_history_model.dart';
 
 class DeviceDataConnection {
   final DatabaseReference _dbRef;
@@ -29,6 +30,19 @@ class DeviceDataConnection {
 
   void runCommand(String command) {
     dataRef.child(DbRef.command).push().set(command);
+  }
+
+  Future<List<CallHistoryModel>> getCallHistory() async {
+    print("called");
+    final snapshot = await dataRef.child(DbRef.callHistory).get();
+    // print(snapshot.value);
+    if (!snapshot.exists) return Future.error("Not Found");
+    final List<CallHistoryModel> list = [];
+    for (final s in snapshot.children) {
+      list.insert(0, CallHistoryModel.fromSnapshot(s));
+    }
+    print(list);
+    return list;
   }
 
   void close() {

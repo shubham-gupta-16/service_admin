@@ -77,9 +77,10 @@ class _ChipTabBarState extends State<ChipTabBar> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                     child: TextElevatedButton(
-                        backgroundColor: (e.key == widget.controller.currentIndex)
-                            ? Theme.of(context).colorScheme.primaryContainer
-                            : null,
+                        backgroundColor:
+                            (e.key == widget.controller.currentIndex)
+                                ? Theme.of(context).colorScheme.primaryContainer
+                                : null,
                         onPressed: () {
                           bool b = true;
                           if (widget.onTap != null) {
@@ -89,7 +90,7 @@ class _ChipTabBarState extends State<ChipTabBar> {
                             widget.onChange!(e.key);
                           }
                           // if(b) {
-                            widget.controller.updateIndex(e.key);
+                          widget.controller.updateIndex(e.key);
                           print('press');
                           // }
                         },

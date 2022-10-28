@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/api/di/locator.dart';
-import 'package:service_admin/utils/utils.dart';
+import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/ui/ui_utils.dart';
 
 import '../../widgets/stack_page_transition.dart';
 import '../add_device/add_device_page.dart';
@@ -31,7 +32,9 @@ class MobileHomePage extends StatelessWidget {
               icon: const Icon(Icons.login_outlined))
         ],
       ),
-      body: const CommonAllDeviceListSection(isDesktop: false,),
+      body: const CommonAllDeviceListSection(
+        isDesktop: false,
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {

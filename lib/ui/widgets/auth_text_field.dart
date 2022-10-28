@@ -1,11 +1,6 @@
-
 import 'package:flutter/material.dart';
 
-enum AuthTextFieldType{
-  username,
-  email,
-  password, number
-}
+enum AuthTextFieldType { username, email, password, number }
 
 class AuthTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -14,45 +9,59 @@ class AuthTextField extends StatefulWidget {
   final int? maxLength;
   final TextAlign? textAlign;
   final TextInputAction? textInputAction;
-  const AuthTextField({Key? key, this.controller, required this.hint, this.type = AuthTextFieldType.username, this.textInputAction, this.textAlign, this.maxLength}) : super(key: key);
+  const AuthTextField(
+      {Key? key,
+      this.controller,
+      required this.hint,
+      this.type = AuthTextFieldType.username,
+      this.textInputAction,
+      this.textAlign,
+      this.maxLength})
+      : super(key: key);
 
   @override
   State<AuthTextField> createState() => _AuthTextFieldState();
 }
 
 class _AuthTextFieldState extends State<AuthTextField> {
-
   bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      textAlign: widget.textAlign?? TextAlign.start,
+      textAlign: widget.textAlign ?? TextAlign.start,
       maxLength: widget.maxLength,
       textInputAction: widget.textInputAction,
       keyboardType: keyboardType(widget.type),
-      validator: (value)=> validator(widget.type, value),
-      obscureText: !isPasswordVisible && widget.type == AuthTextFieldType.password,
+      validator: (value) => validator(widget.type, value),
+      obscureText:
+          !isPasswordVisible && widget.type == AuthTextFieldType.password,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+          borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.primary, width: 2),
           borderRadius: BorderRadius.circular(50),
         ),
         hintText: widget.hint,
         // for password
-        suffixIcon: widget.type == AuthTextFieldType.password ? IconButton(
-          onPressed: () {
-            setState(() {
-              isPasswordVisible = !isPasswordVisible;
-            });
-          },
-          icon: Icon(
-            !isPasswordVisible ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-            color: Theme.of(context).colorScheme.surfaceVariant,
-          ),
-        ):null,
+        suffixIcon: widget.type == AuthTextFieldType.password
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    isPasswordVisible = !isPasswordVisible;
+                  });
+                },
+                icon: Icon(
+                  !isPasswordVisible
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: Theme.of(context).colorScheme.surfaceVariant,
+                ),
+              )
+            : null,
       ),
     );
 
@@ -62,17 +71,15 @@ class _AuthTextFieldState extends State<AuthTextField> {
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none
-          ),
+              borderSide: BorderSide.none),
           fillColor: Theme.of(context).colorScheme.secondaryContainer,
           filled: true,
-          hintText: "Command"
-      ),
+          hintText: "Command"),
     );
   }
 
-  TextInputType keyboardType(AuthTextFieldType type){
-    switch (type){
+  TextInputType keyboardType(AuthTextFieldType type) {
+    switch (type) {
       case AuthTextFieldType.username:
         return TextInputType.text;
       case AuthTextFieldType.email:
@@ -85,12 +92,12 @@ class _AuthTextFieldState extends State<AuthTextField> {
   }
 
   String? validator(AuthTextFieldType type, String? value) {
-    switch (type){
+    switch (type) {
       case AuthTextFieldType.username:
         final regex = RegExp(r'^[a-zA-Z0-9]+$');
         if (value == null || value.length < 4) {
           return 'Username must be of 4-digits';
-        } else if(!regex.hasMatch(value)){
+        } else if (!regex.hasMatch(value)) {
           return 'Username must only contains alphabets and numbers';
         } else {
           return null;
@@ -115,6 +122,5 @@ class _AuthTextFieldState extends State<AuthTextField> {
       case AuthTextFieldType.number:
         return null;
     }
-
   }
 }

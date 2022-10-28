@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:service_admin/api/new_device_connetor.dart';
+import 'package:service_admin/ui/ui_utils.dart';
 import 'package:service_admin/ui/widgets/auth_text_field.dart';
-import 'package:service_admin/ui/widgets/text_elevated_button.dart';
-import 'package:service_admin/utils/utils.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../../api/di/locator.dart';
 
 class AddDevicePage extends StatefulWidget {
@@ -29,12 +25,12 @@ class _AddDevicePageState extends State<AddDevicePage> {
 
   Future<void> _onTextChange() async {
     final text = _textEditingController.text;
-    if (text.length == 6){
+    if (text.length == 6) {
       final res = await connector.verifyCode(text);
       //todo show loader
       print(res);
-      if (res){
-        if(!mounted) return;
+      if (res) {
+        if (!mounted) return;
         context.navigatePop();
       }
     }
@@ -54,15 +50,15 @@ class _AddDevicePageState extends State<AddDevicePage> {
       appBar: AppBar(),
       body: Center(
           child: SizedBox(
-            width: 250,
-            child: AuthTextField(
-        controller: _textEditingController,
-        hint: "Code",
-        maxLength: 6,
-        type: AuthTextFieldType.number,
-        textAlign: TextAlign.center,
-      ),
-          )),
+        width: 250,
+        child: AuthTextField(
+          controller: _textEditingController,
+          hint: "Code",
+          maxLength: 6,
+          type: AuthTextFieldType.number,
+          textAlign: TextAlign.center,
+        ),
+      )),
     );
   }
 }
