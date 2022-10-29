@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
@@ -110,15 +108,6 @@ class _CallHistoryListView extends StatelessWidget {
       }
       map[date]!.add(model);
     }
-    /*final map = filteredList.fold(<String, List<CallHistoryModel>>{}, (previousValue, model) {
-      final date = model.timestamp.toDate();
-      if (!previousValue.containsKey(date)) {
-        previousValue[date] = [];
-      }
-      previousValue[date]!.add(model);
-      return previousValue;
-    });*/
-    print('hi');
 
     return CustomScrollView(
       slivers: map.entries.map((e) => SliverStickyHeader(
@@ -146,30 +135,6 @@ class _CallHistoryListView extends StatelessWidget {
           ),
         ),
       )).toList(growable: false),
-    );
-
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        final model = filteredList[index];
-        final view = CallHistoryItemLayout(
-          model: model,
-          onPressed: () {},
-        );
-
-        final date = model.timestamp.toDate();
-        final nextDate = (index > 0) ? filteredList[index - 1].timestamp.toDate() : null;
-
-        if (date != nextDate){
-          return Column(
-            children: [
-              Text(date),
-              view
-            ],
-          );
-        }
-        return view;
-      },
-      itemCount: filteredList.length,
     );
   }
 }

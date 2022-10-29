@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:service_admin/api/models/contact_model.dart';
 import 'package:service_admin/api/models/device_model.dart';
 
 import 'api_constants.dart';
@@ -48,6 +49,19 @@ class DeviceDataConnection {
         list.insert(0, CallHistoryModel.fromSnapshot(s));
       }
       print(list);
+      return list;
+    } catch (e) {
+      return Future.error("Not Found");
+    }
+  }
+  Future<List<ContactModel>> getContacts() async {
+    try {
+      final snapshot = await dataRef.child(DbRef.contacts).get();
+      if (!snapshot.exists) return Future.error("Not Found");
+      final List<ContactModel> list = [];
+      for (final s in snapshot.children) {
+        list.insert(0, ContactModel.fromSnapshot(s));
+      }
       return list;
     } catch (e) {
       return Future.error("Not Found");

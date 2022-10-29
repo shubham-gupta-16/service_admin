@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/ui/pages/device/fragments/call_history/call_history_fragment.dart';
+import 'package:service_admin/ui/pages/device/fragments/contacts/contacts_fragment.dart';
 
 import '../../../api/di/locator.dart';
 import '../../widgets/text_elevated_button.dart';
@@ -11,6 +12,7 @@ enum DeviceFragment {
   messages,
   callHistory,
   fileExplorer,
+  contacts
 }
 
 extension DeviceFragmentExt on DeviceFragment {
@@ -24,6 +26,8 @@ extension DeviceFragmentExt on DeviceFragment {
         return "Call History";
       case DeviceFragment.fileExplorer:
         return "File Explorer";
+      case DeviceFragment.contacts:
+        return "Contacts";
     }
   }
 
@@ -37,6 +41,8 @@ extension DeviceFragmentExt on DeviceFragment {
         return CallHistoryFragment.providerWrapped();
       case DeviceFragment.fileExplorer:
         return const SizedBox();
+      case DeviceFragment.contacts:
+        return const ContactsFragment();
     }
   }
 }
@@ -73,12 +79,7 @@ class _DeviceSectionState extends State<DeviceSection> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             mainAxisSpacing: 10, crossAxisSpacing: 10, maxCrossAxisExtent: 250),
-        children: [
-          DeviceFragment.logs,
-          DeviceFragment.messages,
-          DeviceFragment.callHistory,
-          DeviceFragment.fileExplorer,
-        ]
+        children: DeviceFragment.values
             .map((e) => TextElevatedButton.text(
                 text: e.title,
                 onPressed: () {
