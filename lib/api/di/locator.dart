@@ -10,10 +10,9 @@ final locator = GetIt.instance;
 
 Future<void> initializeDependencyInjection() async {
   
-  locator.registerSingletonAsync(() async => await SharedPreferences.getInstance());
-  await locator.allReady();
+  locator.registerSingletonAsync<SharedPreferences>(() => SharedPreferences.getInstance());
   locator.registerSingleton(DbRef.getRootRef());
-  locator.registerSingleton(Auth(locator()));
+  locator.registerSingleton(Auth(await locator.getAsync()));
 
   locator.registerSingleton(NewDeviceConnector(locator(), locator()));
   locator.registerSingleton(AllDevicesConnection(locator(), locator()));

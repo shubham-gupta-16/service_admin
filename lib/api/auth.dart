@@ -46,6 +46,7 @@ class Auth {
       final hashPass = snapshot.child("hash").value.toString();
       if (password == hashPass) {
         setUserName(username);
+        //todo setTimeout too
         return AuthCode.success;
       }
       return AuthCode.wrongPassword;
