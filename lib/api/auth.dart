@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:service_admin/api/api_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AuthCode {
   weakPassword,
@@ -11,57 +13,48 @@ enum AuthCode {
 }
 
 class Auth {
-  final auth = FirebaseAuth.instance;
 
-  bool get hasCurrentUser => auth.currentUser != null;
+  final SharedPreferences? _pref;
 
-  String get requireUid => auth.currentUser!.uid;
+  Auth(this._pref);
+  // Future<void> _initPref() async {
+  //   _pref = await SharedPreferences.getInstance();
+  // }
+  //
+  // Auth() {
+  //   _initPref();
+  // }
 
-  User? get currentUser => auth.currentUser;
-  User get requireCurrentUser => auth.currentUser!;
 
-  String? get getUserName => auth.currentUser?.email?.split("@")[0];
-  String get requireUserName => getUserName!;
+
+  Future<void> setUserName(String username) async {
+    await _pref?.setString('username', username);
+  }
+
+  String get requireUsername => getUserName()!;
+
+  String? getUserName() {
+    return _pref?.getString("username");
+  }
+
+  bool get hasCurrentUser => getUserName() != null;
 
   Future<AuthCode> login(String username, String password) async {
     try {
-      final c = await auth.signInWithEmailAndPassword(
-          email: _toEmail(username), password: password);
-      return AuthCode.success;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return AuthCode.userNotFound;
-      } else if (e.code == 'wrong-password') {
-        return AuthCode.wrongPassword;
+      final snapshot = await DbRef.getRootRef().child(DbRef.admin).child(username).get();
+      if(!snapshot.exists) return AuthCode.userNotFound;
+      final hashPass = snapshot.child("hash").value.toString();
+      if (password == hashPass) {
+        setUserName(username);
+        return AuthCode.success;
       }
-      return AuthCode.unknownError;
-    } catch (e) {
-      print(e);
+      return AuthCode.wrongPassword;
+    } on FirebaseAuthException catch (e) {
       return AuthCode.error;
     }
   }
 
-  Future<AuthCode> signup(String username, String password) async {
-    try {
-      final c = await auth.createUserWithEmailAndPassword(
-          email: _toEmail(username), password: password);
-      return AuthCode.success;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return AuthCode.weakPassword;
-      } else if (e.code == 'email-already-in-use') {
-        return AuthCode.emailAlreadyInUse;
-      }
-      return AuthCode.unknownError;
-    } catch (e) {
-      print(e);
-      return AuthCode.error;
-    }
+  Future<void> logout() async {
+    await _pref?.remove('username');
   }
-
-  void logout() {
-    auth.signOut();
-  }
-
-  String _toEmail(String username) => "$username@service.access";
 }

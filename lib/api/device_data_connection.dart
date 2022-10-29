@@ -19,7 +19,7 @@ class DeviceDataConnection {
   DeviceModel get requireDeviceModel => deviceModel!;
 
   DatabaseReference get dataRef =>
-      DbRef.getDataRef(requireDeviceModel.deviceKey, auth.requireUid);
+      DbRef.getDataRef(requireDeviceModel.deviceKey, auth.requireUsername);
 
   StreamSubscription? commandReplySubscription;
 

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:service_admin/api/di/locator.dart';
 import 'package:service_admin/firebase_options.dart';
 import 'package:service_admin/theme/theme.dart';
@@ -11,7 +12,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  initializeDependencyInjection();
+  await initializeDependencyInjection();
+  print("READY");
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Color(0xFF1B1C1F), // navigation bar color

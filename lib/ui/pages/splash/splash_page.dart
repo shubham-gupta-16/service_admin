@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:service_admin/ui/pages/login/auth_page.dart';
 import 'package:service_admin/ui/pages/home/home_page.dart';
-import 'package:service_admin/api/utils.dart';
+import 'package:service_admin/ui/pages/login/auth_page.dart';
 import 'package:service_admin/ui/ui_utils.dart';
 
 import '../../../api/auth.dart';
@@ -28,9 +27,7 @@ class _SplashPageState extends State<SplashPage> {
       if (auth.hasCurrentUser) {
         context.navigatePushReplace(HomePage.providerWrapped());
       } else {
-        await auth.login("shub", '123456');
-        if (!mounted) return;
-        context.navigatePushReplace(HomePage.providerWrapped());
+        context.navigatePushReplace(AuthPage());
 
         // context.navigatePushReplace(const AuthPage());
       }
