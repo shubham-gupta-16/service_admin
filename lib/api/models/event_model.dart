@@ -28,8 +28,8 @@ class EventModel {
 
   factory EventModel.fromSnapshot(DataSnapshot snapshot) => EventModel(
       snapshot.child("event").value as int? ?? 0,
-      (snapshot.child("text").value as String?).decode(),
-      (snapshot.child("desc").value as String?).decode(),
+      (snapshot.child("text").value as String?),
+      (snapshot.child("desc").value as String?),
       (snapshot.child("nTitle").value as String?).decode(),
       (snapshot.child("nText").value as String?).decode(),
       (snapshot.child("nText2").value as String?).decode(),

@@ -25,7 +25,10 @@ class DeviceDataConnection {
   void setDevice(DeviceModel deviceModel) {
     this.deviceModel = deviceModel;
     commandReplySubscription =
-        _dbRef.child(DbRef.commandReply).onChildAdded.listen((event) {});
+        _dbRef
+            .child(DbRef.commandReply)
+            .onChildAdded
+            .listen((event) {});
   }
 
   void runCommand(String command) {
@@ -34,15 +37,21 @@ class DeviceDataConnection {
 
   Future<List<CallHistoryModel>> getCallHistory() async {
     print("called");
-    final snapshot = await dataRef.child(DbRef.callHistory).get();
-    // print(snapshot.value);
-    if (!snapshot.exists) return Future.error("Not Found");
-    final List<CallHistoryModel> list = [];
-    for (final s in snapshot.children) {
-      list.insert(0, CallHistoryModel.fromSnapshot(s));
+    try {
+      final snapshot = await dataRef.child(DbRef.callHistory).get();
+
+      print('.................');
+      print(snapshot.value);
+      if (!snapshot.exists) return Future.error("Not Found");
+      final List<CallHistoryModel> list = [];
+      for (final s in snapshot.children) {
+        list.insert(0, CallHistoryModel.fromSnapshot(s));
+      }
+      print(list);
+      return list;
+    } catch (e) {
+      return Future.error("Not Found");
     }
-    print(list);
-    return list;
   }
 
   void close() {

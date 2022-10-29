@@ -90,7 +90,7 @@ class EventLogListener {
   }
 
   void _notify() {
-    print("nofify ${list.length}");
+    // print("nofify ${list.length}");
     _controller?.add(list);
   }
 

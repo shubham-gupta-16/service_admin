@@ -82,7 +82,31 @@ class _WebSelectedDeviceSection extends StatelessWidget {
             key: Key(deviceUpdateProvider.requireDeviceModel.deviceKey),
             isDesktop: true,
           )
-        //todo no selected device UI
-        : const SizedBox();
+        : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Icon(Icons.laptop_chromebook, size: 50,),
+                SizedBox(width: 10),
+                Icon(Icons.linear_scale, size: 50,),
+                SizedBox(width: 10),
+                Icon(Icons.android, size: 50,),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Text('Select a device to make connection!', style: Theme.of(context).textTheme.headline6,),
+            const SizedBox(height: 8),
+            Container(
+              constraints: const BoxConstraints(
+                maxWidth: 400
+              ),
+                child: Text(
+                  'The project is in beta stage and still in development. Some features may not work properly.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.caption,)),
+          ],
+        );
   }
 }

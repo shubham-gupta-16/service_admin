@@ -34,7 +34,7 @@ extension DeviceFragmentExt on DeviceFragment {
       case DeviceFragment.messages:
         return const SizedBox();
       case DeviceFragment.callHistory:
-        return const CallHistoryFragment();
+        return CallHistoryFragment.providerWrapped();
       case DeviceFragment.fileExplorer:
         return const SizedBox();
     }

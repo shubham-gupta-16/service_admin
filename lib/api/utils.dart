@@ -1,18 +1,24 @@
 extension StringExtNullable on String? {
   String? decode() {
     if (this == null) return null;
-    return Uri.decodeFull(this!);
+    return this!.decode();
   }
 
   String? encode() {
     if (this == null) return null;
-    return Uri.encodeFull(this!);
+    return this!.encode();
   }
 }
 
 extension StringExt on String {
   String decode() {
-    return Uri.decodeFull(this);
+    try {
+      return Uri.decodeFull(this);
+    } catch (e){
+      print(this);
+      print(e);
+      return this;
+    }
   }
 
   String encode() {
