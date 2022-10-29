@@ -32,7 +32,7 @@ class _ContactsFragmentState extends State<ContactsFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(DeviceFragment.logs.title),
+        title: Text(DeviceFragment.contacts.title),
       ),
       body: FutureBuilder(
           future: _dataConnection.getContacts(),

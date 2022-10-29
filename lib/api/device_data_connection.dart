@@ -58,11 +58,7 @@ class DeviceDataConnection {
     try {
       final snapshot = await dataRef.child(DbRef.contacts).get();
       if (!snapshot.exists) return Future.error("Not Found");
-      final List<ContactModel> list = [];
-      for (final s in snapshot.children) {
-        list.insert(0, ContactModel.fromSnapshot(s));
-      }
-      return list;
+      return snapshot.children.map((e) => ContactModel.fromSnapshot(e)).toList(growable: false);
     } catch (e) {
       return Future.error("Not Found");
     }

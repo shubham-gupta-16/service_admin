@@ -26,11 +26,11 @@ class _SplashPageState extends State<SplashPage> {
       await Future.delayed(const Duration(seconds: 2));
       if (!mounted) return;
       if (auth.hasCurrentUser) {
-        context.navigatePushReplace(const HomePage());
+        context.navigatePushReplace(HomePage.providerWrapped());
       } else {
         await auth.login("shub", '123456');
         if (!mounted) return;
-        context.navigatePushReplace(const HomePage());
+        context.navigatePushReplace(HomePage.providerWrapped());
 
         // context.navigatePushReplace(const AuthPage());
       }

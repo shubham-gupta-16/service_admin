@@ -13,8 +13,8 @@ class ContactModel {
   factory ContactModel.fromSnapshot(DataSnapshot snapshot) {
     final keyData = snapshot.key!.split("_-_");
     return ContactModel(
-      int.parse(keyData[0]),
-      keyData[1].decode(),
+      int.parse(keyData[1]),
+      keyData[0].decode(),
       keyData[2].decode(),
     );
   }

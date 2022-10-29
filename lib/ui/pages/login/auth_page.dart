@@ -126,7 +126,7 @@ class __LoginFromState extends State<_LoginFrom> {
                   if (!mounted) return;
                   context.navigatePop();
                   if (code == AuthCode.success) {
-                    context.navigatePushReplace(const HomePage());
+                    context.navigatePushReplace(HomePage.providerWrapped());
                   } else {
                     print(code.name);
                   }
