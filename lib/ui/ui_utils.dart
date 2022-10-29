@@ -19,7 +19,7 @@ extension Timestamp on int {
     return formatter.format(DateTime.fromMicrosecondsSinceEpoch(this * 1000));
   }
 
-  String formatDate() {
+  String toDate() {
     return _prettyDate.format(DateTime.fromMillisecondsSinceEpoch(this));
   }
 

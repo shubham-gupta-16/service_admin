@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
-import 'package:service_admin/ui/pages/device/fragments/call_history_fragment.dart';
+import 'package:service_admin/ui/pages/device/fragments/call_history/call_history_fragment.dart';
 
 import '../../../api/di/locator.dart';
 import '../../widgets/text_elevated_button.dart';
-import 'fragments/event_log_fragment.dart';
+import 'fragments/event_log/event_log_fragment.dart';
 
 enum DeviceFragment {
   logs,

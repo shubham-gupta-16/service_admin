@@ -6,6 +6,7 @@ import 'package:service_admin/api/models/call_history_model.dart';
 import 'package:service_admin/ui/item_layouts/call_history_item_layout.dart';
 import 'package:service_admin/ui/pages/device/device_section.dart';
 import 'package:service_admin/ui/pages/device/fragments/call_history/provider/call_history_provider.dart';
+import 'package:service_admin/ui/ui_utils.dart';
 import 'package:service_admin/ui/widgets/chip_tab_bar.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 
@@ -100,11 +101,24 @@ class _CallHistoryListView extends StatelessWidget {
 
     return ListView.builder(
       itemBuilder: (context, index) {
-        final callHistoryModel = filteredList[index];
-        return CallHistoryItemLayout(
-          model: callHistoryModel,
+        final model = filteredList[index];
+        final view = CallHistoryItemLayout(
+          model: model,
           onPressed: () {},
         );
+
+        final date = model.timestamp.toDate();
+        final nextDate = (index > 0) ? filteredList[index - 1].timestamp.toDate() : null;
+
+        if (date != nextDate){
+          return Column(
+            children: [
+              Text(date),
+              view
+            ],
+          );
+        }
+        return view;
       },
       itemCount: filteredList.length,
     );
