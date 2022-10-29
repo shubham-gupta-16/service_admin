@@ -27,7 +27,7 @@ class CallHistoryItemLayout extends StatelessWidget {
       },
       title: Text(model.tempName ?? model.number),
       subtitle: Text(
-          "${model.duration.formatDuration()} - ${model.timestamp.displayDate()}"),
+          "${model.duration.formatDuration()} - ${model.timestamp.toTime()}"),
     );
   }
 

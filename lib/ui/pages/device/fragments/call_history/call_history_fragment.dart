@@ -1,4 +1,7 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/api/di/locator.dart';
@@ -93,11 +96,57 @@ class _CallHistoryListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final type = context.watch<CallHistoryProvider>().type;
+    final provider = context.watch<CallHistoryProvider>();
 
-    final filteredList = type > 0
-        ? list.where((element) => element.type == type).toList(growable: false)
+    final filteredList = provider.type > 0
+        ? list.where((element) => element.type == provider.type).toList(growable: false)
         : list;
+
+    final map = {};
+    for (final model in filteredList){
+      final date = model.timestamp.toDate();
+      if (!map.containsKey(date)) {
+        map[date] = [];
+      }
+      map[date]!.add(model);
+    }
+    /*final map = filteredList.fold(<String, List<CallHistoryModel>>{}, (previousValue, model) {
+      final date = model.timestamp.toDate();
+      if (!previousValue.containsKey(date)) {
+        previousValue[date] = [];
+      }
+      previousValue[date]!.add(model);
+      return previousValue;
+    });*/
+    print('hi');
+
+    return CustomScrollView(
+      slivers: map.entries.map((e) => SliverStickyHeader(
+        header: SizedBox(
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                borderRadius: BorderRadius.circular(20)
+              ),
+              child: Text(
+                e.key,
+              ),
+            ),
+          ),
+        ),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, i) => CallHistoryItemLayout(
+                  model: e.value[i],
+                  onPressed: () {},
+                ),
+            childCount: e.value.length,
+          ),
+        ),
+      )).toList(growable: false),
+    );
 
     return ListView.builder(
       itemBuilder: (context, index) {

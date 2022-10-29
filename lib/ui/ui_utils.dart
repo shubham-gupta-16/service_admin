@@ -11,7 +11,8 @@ const List<int> _times = [
 ];
 const _timesString = ["year", "month", "day", "hour", "minute", "second"];
 
-final _prettyDate = DateFormat("dd-MM-yyyy");
+final _dateFormatter = DateFormat("dd-MM-yyyy");
+final _timeFormatter = DateFormat("hh:mm a");
 
 extension Timestamp on int {
   String displayDate() {
@@ -20,7 +21,10 @@ extension Timestamp on int {
   }
 
   String toDate() {
-    return _prettyDate.format(DateTime.fromMillisecondsSinceEpoch(this));
+    return _dateFormatter.format(DateTime.fromMillisecondsSinceEpoch(this));
+  }
+  String toTime() {
+    return _timeFormatter.format(DateTime.fromMillisecondsSinceEpoch(this));
   }
 
   String formatDuration() {
