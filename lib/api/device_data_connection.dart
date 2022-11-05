@@ -26,19 +26,23 @@ class DeviceDataConnection {
   DatabaseReference get dataRef =>
       DbRef.getDataRef(deviceKey, auth.requireUsername);
 
-  StreamSubscription? _commandReplySubscription;
+  StreamController<CmdReplyModel>? _replyController;
+  Stream<CmdReplyModel> get replyStream => _replyController!.stream;
 
-  StreamController? replySubs;
 
   void start() {
-    replySubs = StreamController.broadcast();
-    _commandReplySubscription =
+    print("start -------------------------------------------------------------");
+    _replyController = StreamController.broadcast();
+    final commandReplySubscription =
         _dbRef.child(DbRef.commandReply).child(auth.requireUsername).onChildAdded.listen((event) {
           if (!event.snapshot.exists) return;
           final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
-          replySubs?.add(cmdReply);
+          _replyController?.add(cmdReply);
           print(cmdReply);
         });
+    _replyController?.onCancel = (){
+      commandReplySubscription.cancel();
+    };
   }
 
   void setDevice(DeviceModel deviceModel) {
@@ -91,7 +95,8 @@ class DeviceDataConnection {
   }
 
   void close() {
-    _commandReplySubscription?.cancel();
+    print("close -------------------------------------------------------------");
+    _replyController?.close();
     deviceModel = null;
   }
 }

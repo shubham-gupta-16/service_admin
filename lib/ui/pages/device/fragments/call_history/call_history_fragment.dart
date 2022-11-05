@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,8 @@ import 'package:service_admin/ui/pages/device/fragments/call_history/provider/ca
 import 'package:service_admin/ui/ui_utils.dart';
 import 'package:service_admin/ui/widgets/chip_tab_bar.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
+
+import '../../../../../api/command.dart';
 
 class CallHistoryFragment extends StatefulWidget {
   const CallHistoryFragment._({Key? key}) : super(key: key);
@@ -26,16 +30,23 @@ class CallHistoryFragment extends StatefulWidget {
 class _CallHistoryFragmentState extends State<CallHistoryFragment> {
   late DeviceDataConnection _dataConnection;
   late ChipTabController chipTabController;
+  StreamSubscription? _replySubs;
 
   @override
   void initState() {
     chipTabController = ChipTabController();
     _dataConnection = locator();
+    _replySubs = _dataConnection.replyStream.listen((cmdReply) {
+      if (cmdReply.code == Command.callHistory) {
+        setState(() {});
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    _replySubs?.cancel();
     chipTabController.dispose();
     super.dispose();
   }

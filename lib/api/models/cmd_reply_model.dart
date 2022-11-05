@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:service_admin/api/command.dart';
 import 'package:service_admin/api/utils.dart';
 
 import 'volume_model.dart';
@@ -6,7 +7,7 @@ import 'volume_model.dart';
 class CmdReplyModel {
   final String key;
   final String deviceKey;
-  final int code;
+  final Command code;
   final int status;
   final Map<String, dynamic>? data;
   final dynamic response;
@@ -15,7 +16,7 @@ class CmdReplyModel {
     return CmdReplyModel(
       snapshot.key!,
       snapshot.child("deviceKey").value as String? ?? "No Name",
-      snapshot.child("code").value as int? ?? 0,
+      Command.fromCode(snapshot.child("code").value as int? ?? 0),
       snapshot.child("status").value as int? ?? 0,
         Map<String, dynamic>.from(snapshot.child("data").value as dynamic),
       snapshot.child("response").value
