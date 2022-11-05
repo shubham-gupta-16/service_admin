@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:service_admin/api/loacal_db.dart';
+import 'package:service_admin/api/models/cmd_reply_model.dart';
 import 'package:service_admin/api/models/contact_model.dart';
 import 'package:service_admin/api/models/device_model.dart';
 
@@ -19,20 +20,29 @@ class DeviceDataConnection {
   DeviceModel? deviceModel;
 
   DeviceModel get requireDeviceModel => deviceModel!;
+
   String get deviceKey => requireDeviceModel.deviceKey;
 
   DatabaseReference get dataRef =>
       DbRef.getDataRef(deviceKey, auth.requireUsername);
 
-  StreamSubscription? commandReplySubscription;
+  StreamSubscription? _commandReplySubscription;
+
+  StreamController? replySubs;
+
+  void start() {
+    replySubs = StreamController.broadcast();
+    _commandReplySubscription =
+        _dbRef.child(DbRef.commandReply).child(auth.requireUsername).onChildAdded.listen((event) {
+          if (!event.snapshot.exists) return;
+          final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
+          replySubs?.add(cmdReply);
+          print(cmdReply);
+        });
+  }
 
   void setDevice(DeviceModel deviceModel) {
     this.deviceModel = deviceModel;
-    commandReplySubscription =
-        _dbRef
-            .child(DbRef.commandReply)
-            .onChildAdded
-            .listen((event) {});
   }
 
   void runCommand(String command) {
@@ -60,6 +70,7 @@ class DeviceDataConnection {
       return Future.error("Not Found");
     }
   }
+
   Future<List<ContactModel>> getContacts() async {
     final localContacts = db.getContacts(deviceKey);
     if (localContacts != null) {
@@ -69,7 +80,9 @@ class DeviceDataConnection {
     try {
       final snapshot = await dataRef.child(DbRef.contacts).get();
       if (!snapshot.exists) return Future.error("Not Found");
-      final list = snapshot.children.map((e) => ContactModel.fromSnapshot(e)).toList(growable: false);
+      final list = snapshot.children
+          .map((e) => ContactModel.fromSnapshot(e))
+          .toList(growable: false);
       db.updateContact(deviceKey, list);
       return list;
     } catch (e) {
@@ -78,7 +91,7 @@ class DeviceDataConnection {
   }
 
   void close() {
-    commandReplySubscription?.cancel();
+    _commandReplySubscription?.cancel();
     deviceModel = null;
   }
 }

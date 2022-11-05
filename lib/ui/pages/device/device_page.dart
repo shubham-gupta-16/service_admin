@@ -26,7 +26,6 @@ class _DevicePageState extends State<DevicePage> {
 
   @override
   void dispose() {
-    // _dataConnection.close();
     super.dispose();
   }
 
