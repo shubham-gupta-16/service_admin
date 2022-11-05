@@ -6,7 +6,7 @@ import 'package:service_admin/ui/widgets/auth_text_field.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 import 'package:service_admin/api/utils.dart';
 
-import '../../../api/di/locator.dart';
+import '../../../di/locator.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);

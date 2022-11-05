@@ -4,7 +4,7 @@ import 'package:service_admin/ui/pages/login/auth_page.dart';
 import 'package:service_admin/ui/ui_utils.dart';
 
 import '../../../api/auth.dart';
-import '../../../api/di/locator.dart';
+import '../../../di/locator.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -37,16 +37,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('SplashPage'),
-      ),
-      body: Container(),
+      body: buildResponiveColorData(),
     );
-    // return Scaffold(
-    //   body: Center(
-    //     child: CircularProgressIndicator(),
-    //   ),
-    // );
   }
 
   Widget buildResponiveColorData() => SingleChildScrollView(

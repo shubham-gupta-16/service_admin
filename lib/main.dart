@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:service_admin/api/auth.dart';
-import 'package:service_admin/api/di/locator.dart';
+import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/firebase_options.dart';
 import 'package:service_admin/theme/theme.dart';
 import 'package:service_admin/ui/pages/login/auth_page.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/device_data_connection.dart';
-import 'package:service_admin/api/di/locator.dart';
+import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/api/models/call_history_model.dart';
 import 'package:service_admin/ui/item_layouts/call_history_item_layout.dart';
 import 'package:service_admin/ui/pages/device/device_section.dart';

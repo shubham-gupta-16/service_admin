@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:service_admin/api/new_device_connetor.dart';
 import 'package:service_admin/ui/ui_utils.dart';
-import '../../../api/di/locator.dart';
+import '../../../di/locator.dart';
 
 class AddDevicePage extends StatefulWidget {
   const AddDevicePage({Key? key}) : super(key: key);
