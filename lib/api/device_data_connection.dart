@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:service_admin/api/loacal_db.dart';
@@ -42,6 +43,7 @@ class DeviceDataConnection {
       if (!event.snapshot.exists) return;
       final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
       _replyController?.add(cmdReply);
+      event.snapshot.ref.remove();
       print(cmdReply);
     });
     _replyController?.onCancel = () {
@@ -108,7 +110,7 @@ class DeviceDataConnection {
         ? await dataRef
             .child(DbRef.callHistory)
             .orderByKey()
-            .startAfter(timestamp.toString())
+            .startAfter((timestamp + 1).toString())
             .get()
         : await dataRef.child(DbRef.callHistory).get();
     print('.................');
@@ -117,6 +119,7 @@ class DeviceDataConnection {
     for (final s in snapshot.children) {
       list.insert(0, CallHistoryModel.fromSnapshot(s));
     }
+    print(list);
     return list;
   }
 }

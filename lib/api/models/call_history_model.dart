@@ -26,4 +26,17 @@ class CallHistoryModel {
 
   CallHistoryModel(this.timestamp, this.callHistoryId, this.duration,
       this.number, this.type, this.tempName);
+
+  @override
+  String toString() {
+    return {
+      "timestamp" : timestamp,
+      "callHistoryId" : callHistoryId,
+      "duration" : duration,
+      "number" : number,
+      "type" : type,
+      "tempName" : tempName,
+    }.toString();
+
+  }
 }
