@@ -27,20 +27,24 @@ class DeviceDataConnection {
       DbRef.getDataRef(deviceKey, auth.requireUsername);
 
   StreamController<CmdReplyModel>? _replyController;
+
   Stream<CmdReplyModel> get replyStream => _replyController!.stream;
 
-
   void start() {
-    print("start -------------------------------------------------------------");
+    print(
+        "start -------------------------------------------------------------");
     _replyController = StreamController.broadcast();
-    final commandReplySubscription =
-        _dbRef.child(DbRef.commandReply).child(auth.requireUsername).onChildAdded.listen((event) {
-          if (!event.snapshot.exists) return;
-          final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
-          _replyController?.add(cmdReply);
-          print(cmdReply);
-        });
-    _replyController?.onCancel = (){
+    final commandReplySubscription = _dbRef
+        .child(DbRef.commandReply)
+        .child(auth.requireUsername)
+        .onChildAdded
+        .listen((event) {
+      if (!event.snapshot.exists) return;
+      final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
+      _replyController?.add(cmdReply);
+      print(cmdReply);
+    });
+    _replyController?.onCancel = () {
       commandReplySubscription.cancel();
     };
   }
@@ -56,18 +60,16 @@ class DeviceDataConnection {
   Future<List<CallHistoryModel>> getCallHistory() async {
     print("called");
     final localCallHistory = db.getCallHistory(deviceKey);
-    if (localCallHistory != null) {
-      await Future.delayed(const Duration(milliseconds: 300));
+    try {
+      if (localCallHistory != null && localCallHistory.isNotEmpty) {
+        final more = await _getCallHistory(localCallHistory.first.timestamp);
+        for(final i in more){
+          print(i);
+          localCallHistory.insert(0, i);
+        }
       return localCallHistory;
     }
-    try {
-      final snapshot = await dataRef.child(DbRef.callHistory).get();
-      print('.................');
-      if (!snapshot.exists) return Future.error("Not Found");
-      final List<CallHistoryModel> list = [];
-      for (final s in snapshot.children) {
-        list.insert(0, CallHistoryModel.fromSnapshot(s));
-      }
+      final list = await _getCallHistory(null);
       db.updateCallHistory(deviceKey, list);
       return list;
     } catch (e) {
@@ -95,8 +97,26 @@ class DeviceDataConnection {
   }
 
   void close() {
-    print("close -------------------------------------------------------------");
+    print(
+        "close -------------------------------------------------------------");
     _replyController?.close();
     deviceModel = null;
+  }
+
+  Future<List<CallHistoryModel>> _getCallHistory(int? timestamp) async {
+    final snapshot = timestamp != null
+        ? await dataRef
+            .child(DbRef.callHistory)
+            .orderByKey()
+            .startAfter(timestamp.toString())
+            .get()
+        : await dataRef.child(DbRef.callHistory).get();
+    print('.................');
+    if (!snapshot.exists) return Future.error("Not Found");
+    final List<CallHistoryModel> list = [];
+    for (final s in snapshot.children) {
+      list.insert(0, CallHistoryModel.fromSnapshot(s));
+    }
+    return list;
   }
 }

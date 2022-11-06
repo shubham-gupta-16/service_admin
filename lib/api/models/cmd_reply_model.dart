@@ -18,7 +18,7 @@ class CmdReplyModel {
       snapshot.child("deviceKey").value as String? ?? "No Name",
       Command.fromCode(snapshot.child("code").value as int? ?? 0),
       snapshot.child("status").value as int? ?? 0,
-        Map<String, dynamic>.from(snapshot.child("data").value as dynamic),
+        snapshot.child("data").value != null ? Map<String, dynamic>.from(snapshot.child("data").value as dynamic) : null,
       snapshot.child("response").value
     );
   }
