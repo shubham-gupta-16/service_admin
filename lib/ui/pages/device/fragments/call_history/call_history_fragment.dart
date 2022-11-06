@@ -37,7 +37,7 @@ class _CallHistoryFragmentState extends State<CallHistoryFragment> {
     chipTabController = ChipTabController();
     _dataConnection = locator();
     _replySubs = _dataConnection.replyStream.listen((cmdReply) {
-      if (cmdReply.code == Command.callHistory) {
+      if (cmdReply.code == Command.callHistory && cmdReply.deviceKey == _dataConnection.deviceKey) {
         setState(() {});
       }
     });
