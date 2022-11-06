@@ -42,7 +42,7 @@ extension DeviceFragmentExt on DeviceFragment {
       case DeviceFragment.fileExplorer:
         return const SizedBox();
       case DeviceFragment.contacts:
-        return const ContactsFragment();
+        return ContactsFragment.providerWrapped();
     }
   }
 }
