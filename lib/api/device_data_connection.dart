@@ -64,18 +64,23 @@ class DeviceDataConnection {
     final localCallHistory = db.getCallHistory(deviceKey);
     try {
       if (localCallHistory != null && localCallHistory.isNotEmpty) {
+        print('more call history...');
         final more = await _getCallHistory(localCallHistory.first.timestamp);
-        for(final i in more){
+        for (final i in more) {
           print(i);
           localCallHistory.insert(0, i);
         }
-      return localCallHistory;
-    }
+        return localCallHistory;
+      }
+      print('all call history');
       final list = await _getCallHistory(null);
       db.updateCallHistory(deviceKey, list);
+      if (list.isEmpty) {
+        return Future.error("Empty Result");
+      }
       return list;
-    } catch (e) {
-      return Future.error("Not Found");
+    } catch (e){
+      return Future.error("Network Error");
     }
   }
 
@@ -114,7 +119,7 @@ class DeviceDataConnection {
             .get()
         : await dataRef.child(DbRef.callHistory).get();
     print('.................');
-    if (!snapshot.exists) return Future.error("Not Found");
+    if (!snapshot.exists) [];
     final List<CallHistoryModel> list = [];
     for (final s in snapshot.children) {
       list.insert(0, CallHistoryModel.fromSnapshot(s));
