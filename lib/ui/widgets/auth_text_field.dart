@@ -9,6 +9,7 @@ class AuthTextField extends StatefulWidget {
   final int? maxLength;
   final TextAlign? textAlign;
   final TextInputAction? textInputAction;
+  final void Function(String s)? onSubmit;
   const AuthTextField(
       {Key? key,
       this.controller,
@@ -16,7 +17,7 @@ class AuthTextField extends StatefulWidget {
       this.type = AuthTextFieldType.username,
       this.textInputAction,
       this.textAlign,
-      this.maxLength})
+      this.maxLength, this.onSubmit})
       : super(key: key);
 
   @override
@@ -33,6 +34,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
       textAlign: widget.textAlign ?? TextAlign.start,
       maxLength: widget.maxLength,
       textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onSubmit,
       keyboardType: keyboardType(widget.type),
       validator: (value) => validator(widget.type, value),
       obscureText:

@@ -96,9 +96,13 @@ class __LoginFromState extends State<_LoginFrom> {
           ),
           const SizedBox(height: 5),
           AuthTextField(
+            textInputAction: TextInputAction.go,
             controller: passwordController,
             hint: 'Type your password',
             type: AuthTextFieldType.password,
+            onSubmit: (_){
+              _login();
+            },
           ),
           const SizedBox(height: 20),
           //---------------- FORGET PASSWORD ------------------------
@@ -116,21 +120,9 @@ class __LoginFromState extends State<_LoginFrom> {
               text: 'Login',
               width: double.infinity,
               height: 50,
-              onPressed: () async {
+              onPressed: () {
                 print('login pressed');
-                if (_formKey.currentState!.validate()) {
-                  context.showLoaderDialog();
-                  final code = await widget.callback(
-                      emailController.text.trim(),
-                      passwordController.text.trim());
-                  if (!mounted) return;
-                  context.navigatePop();
-                  if (code == AuthCode.success) {
-                    context.navigatePushReplace(HomePage.providerWrapped());
-                  } else {
-                    print(code.name);
-                  }
-                }
+                _login();
               }),
 
           /*const SizedBox(height: 40),
@@ -156,5 +148,21 @@ class __LoginFromState extends State<_LoginFrom> {
         ],
       ),
     );
+  }
+
+  Future<void> _login() async {
+    if (_formKey.currentState!.validate()) {
+      context.showLoaderDialog();
+      final code = await widget.callback(
+          emailController.text.trim(),
+          passwordController.text.trim());
+      if (!mounted) return;
+      context.navigatePop();
+      if (code == AuthCode.success) {
+        context.navigatePushReplace(HomePage.providerWrapped());
+      } else {
+        print(code.name);
+      }
+    }
   }
 }
