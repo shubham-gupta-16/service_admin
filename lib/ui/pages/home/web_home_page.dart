@@ -16,6 +16,7 @@ class WebHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("web build");
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Row(

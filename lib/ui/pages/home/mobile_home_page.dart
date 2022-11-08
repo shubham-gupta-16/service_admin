@@ -17,12 +17,12 @@ class MobileHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("mobile build");
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(),
         leadingWidth: 0,
         title: const Text('Devices'),
-        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
               onPressed: () {

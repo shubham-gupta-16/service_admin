@@ -6,6 +6,7 @@ import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/ui/pages/home/mobile_home_page.dart';
 import 'package:service_admin/ui/pages/home/providers/device_update_provider.dart';
+import 'package:service_admin/ui/pages/home/providers/screen_mode_provider.dart';
 import 'package:service_admin/ui/ui_utils.dart';
 
 import 'web_home_page.dart';
@@ -13,8 +14,13 @@ import 'web_home_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage._({Key? key}) : super(key: key);
 
-  static Widget providerWrapped() => ChangeNotifierProvider.value(
-      value: DeviceUpdateProvider(), child: const HomePage._());
+  static Widget providerWrapped() => MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: DeviceUpdateProvider()),
+          ChangeNotifierProvider.value(value: ScreenModeProvider())
+        ],
+        child: const HomePage._(),
+      );
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -32,6 +38,9 @@ class _HomePageState extends State<HomePage> {
     _replySubs = _dataConnection.replyStream.listen((reply) {
       context.showSnackBar(reply.code.name);
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ScreenModeProvider>().setMode(getScreenMode(context));
+    });
   }
 
   @override
@@ -43,14 +52,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(builder: (context, constraints) {
-        final isDesktop = constraints.maxWidth > 600;
-        if (isDesktop) {
-          return const WebHomePage();
-        }
-        return const MobileHomePage();
-      }),
-    );
+
+    final mode = getScreenMode(context);
+    context.read<ScreenModeProvider>().setMode(mode);
+
+    if (mode == ScreenMode.expanded) {
+      return const WebHomePage();
+    }
+    return const MobileHomePage();
   }
 }
