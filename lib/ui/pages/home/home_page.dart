@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/di/locator.dart';
@@ -38,9 +39,7 @@ class _HomePageState extends State<HomePage> {
     _replySubs = _dataConnection.replyStream.listen((reply) {
       context.showSnackBar(reply.code.name);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ScreenModeProvider>().setMode(getScreenMode(context));
-    });
+
   }
 
   @override
@@ -54,11 +53,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     final mode = getScreenMode(context);
-    context.read<ScreenModeProvider>().setMode(mode);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('tada');
+      context.read<ScreenModeProvider>().setMode(getScreenMode(context));
+    });
 
     if (mode == ScreenMode.expanded) {
       return const WebHomePage();
     }
     return const MobileHomePage();
   }
+
+
 }
