@@ -9,6 +9,7 @@ import 'package:service_admin/ui/item_layouts/contact_item_layout.dart';
 import 'package:service_admin/ui/item_layouts/event_item_layout.dart';
 import 'package:service_admin/ui/pages/device/device_section.dart';
 import 'package:service_admin/ui/pages/device/fragments/contacts/provider/contacts_provider.dart';
+import 'package:service_admin/ui/pages/home/providers/screen_mode_provider.dart';
 import 'package:service_admin/ui/widgets/chip_tab_bar.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 
@@ -49,31 +50,17 @@ class _ContactsFragmentState extends State<ContactsFragment> {
 
   @override
   Widget build(BuildContext context) {
+    final screenMode = context.watch<ScreenModeProvider>().mode;
     return Scaffold(
       appBar: AppBar(
-        title: Text(DeviceFragment.contacts.title),
-        actions: [
-          Container(
-            constraints: const BoxConstraints(
-              maxWidth: 300
-            ),
-            padding: const EdgeInsets.all(8),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                  contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  fillColor:
-                  Theme.of(context).colorScheme.secondaryContainer,
-                  filled: true,
-                  hintText: "Search Contacts..."),
-            ),
+        titleSpacing: 0,
+        title: screenMode.isSmallOrMedium ? _searchbar() : const Text('Contacts'),
+        actions: screenMode.isExpanded ? [
+          SizedBox(
+            width: 300,
+            child: _searchbar(),
           )
-        ],
+        ] : null,
       ),
       body: FutureBuilder(
           future: _dataConnection.getContacts(),
@@ -94,6 +81,25 @@ class _ContactsFragmentState extends State<ContactsFragment> {
           }),
     );
   }
+
+  Widget _searchbar() => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    height: 40,
+    child: TextField(
+      controller: _searchController,
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none),
+          fillColor:
+          Theme.of(context).colorScheme.secondaryContainer,
+          filled: true,
+          hintText: "Search Contacts..."),
+    ),
+  );
 }
 
 class _ContactsListView extends StatelessWidget {

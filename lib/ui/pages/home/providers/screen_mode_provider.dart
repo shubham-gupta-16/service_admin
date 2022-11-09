@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 enum ScreenMode {
   small,
   medium,
-  expanded
+  expanded;
+
+  bool get isSmall => this == ScreenMode.small;
+  bool get isMedium => this == ScreenMode.medium;
+  bool get isExpanded => this == ScreenMode.expanded;
+
+  bool get isSmallOrMedium => this == ScreenMode.small || this == ScreenMode.medium;
+  bool get isMediumOrExpanded => this == ScreenMode.medium || this == ScreenMode.expanded;
 }
 
 ScreenMode getScreenMode(BuildContext context){
-  final isDesktop = MediaQuery.of(context).size.width > 600;
-  return isDesktop? ScreenMode.expanded : ScreenMode.small;
+  final width = MediaQuery.of(context).size.width;
+  return width < 600 ? ScreenMode.small : width > 840 ? ScreenMode.expanded : ScreenMode.medium;
 }
 
 class ScreenModeProvider extends ChangeNotifier {
