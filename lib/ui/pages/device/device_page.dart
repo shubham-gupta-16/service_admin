@@ -60,7 +60,8 @@ class _DevicePageState extends State<DevicePage> {
                 ),
               ),
             ),
-            Padding(
+            Container(
+              color: Theme.of(context).colorScheme.background,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
                 children: [
