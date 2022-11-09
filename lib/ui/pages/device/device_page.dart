@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/ui/widgets/stack_page_transition.dart';
 import '../../../di/locator.dart';
@@ -66,6 +67,13 @@ class _DevicePageState extends State<DevicePage> {
                   Expanded(
                     child: TextField(
                       controller: _textEditingController,
+                      textInputAction: TextInputAction.go,
+                      onSubmitted: (s){
+                        _dataConnection
+                            .runCommand(_textEditingController.text.trim());
+                        _textEditingController.clear();
+                      },
+                      style: GoogleFonts.spaceMono(),
                       decoration: InputDecoration(
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 10),

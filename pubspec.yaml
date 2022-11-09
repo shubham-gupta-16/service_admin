@@ -48,6 +48,7 @@ dependencies:
   flutter_sticky_header: ^0.6.4
   shared_preferences: ^2.0.15
   pinput: ^2.2.16
+  google_fonts: ^3.0.1
 
 
 dev_dependencies:
