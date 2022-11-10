@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/all_devices_connection.dart';
 import 'package:service_admin/api/device_data_connection.dart';
-import 'package:service_admin/api/di/locator.dart';
+import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/api/models/device_model.dart';
 import 'package:service_admin/ui/item_layouts/device_item_layout.dart';
 import 'package:service_admin/ui/pages/device/device_page.dart';

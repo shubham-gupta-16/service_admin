@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/auth.dart';
-import 'package:service_admin/api/di/locator.dart';
+import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/api/utils.dart';
 import 'package:service_admin/ui/ui_utils.dart';
 
@@ -17,12 +17,12 @@ class MobileHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("mobile build");
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(),
         leadingWidth: 0,
         title: const Text('Devices'),
-        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
               onPressed: () {

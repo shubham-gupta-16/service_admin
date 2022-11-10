@@ -69,7 +69,7 @@ extension Context on BuildContext {
     Navigator.pop(this);
   }
 
-  showLoaderDialog() {
+  void showLoaderDialog() {
     AlertDialog alert = AlertDialog(
       content: Row(
         children: const [

@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:service_admin/api/loacal_db.dart';
+import 'package:service_admin/api/models/cmd_reply_model.dart';
 import 'package:service_admin/api/models/contact_model.dart';
 import 'package:service_admin/api/models/device_model.dart';
 
@@ -11,6 +14,7 @@ import 'models/call_history_model.dart';
 class DeviceDataConnection {
   final DatabaseReference _dbRef;
   final Auth auth;
+  final db = LocalDb();
 
   DeviceDataConnection(this._dbRef, this.auth);
 
@@ -18,18 +22,37 @@ class DeviceDataConnection {
 
   DeviceModel get requireDeviceModel => deviceModel!;
 
-  DatabaseReference get dataRef =>
-      DbRef.getDataRef(requireDeviceModel.deviceKey, auth.requireUsername);
+  String get deviceKey => requireDeviceModel.deviceKey;
 
-  StreamSubscription? commandReplySubscription;
+  DatabaseReference get dataRef =>
+      DbRef.getDataRef(deviceKey, auth.requireUsername);
+
+  StreamController<CmdReplyModel>? _replyController;
+
+  Stream<CmdReplyModel> get replyStream => _replyController!.stream;
+
+  void start() {
+    print(
+        "start -------------------------------------------------------------");
+    _replyController = StreamController.broadcast();
+    final commandReplySubscription = _dbRef
+        .child(DbRef.commandReply)
+        .child(auth.requireUsername)
+        .onChildAdded
+        .listen((event) {
+      if (!event.snapshot.exists) return;
+      final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
+      _replyController?.add(cmdReply);
+      event.snapshot.ref.remove();
+      print(cmdReply);
+    });
+    _replyController?.onCancel = () {
+      commandReplySubscription.cancel();
+    };
+  }
 
   void setDevice(DeviceModel deviceModel) {
     this.deviceModel = deviceModel;
-    commandReplySubscription =
-        _dbRef
-            .child(DbRef.commandReply)
-            .onChildAdded
-            .listen((event) {});
   }
 
   void runCommand(String command) {
@@ -38,34 +61,70 @@ class DeviceDataConnection {
 
   Future<List<CallHistoryModel>> getCallHistory() async {
     print("called");
+    final localCallHistory = db.getCallHistory(deviceKey);
     try {
-      final snapshot = await dataRef.child(DbRef.callHistory).get();
-
-      print('.................');
-      print(snapshot.value);
-      if (!snapshot.exists) return Future.error("Not Found");
-      final List<CallHistoryModel> list = [];
-      for (final s in snapshot.children) {
-        list.insert(0, CallHistoryModel.fromSnapshot(s));
+      if (localCallHistory != null && localCallHistory.isNotEmpty) {
+        print('more call history...');
+        final more = await _getCallHistory(localCallHistory.first.timestamp);
+        for (final i in more) {
+          print(i);
+          localCallHistory.insert(0, i);
+        }
+        return localCallHistory;
       }
-      print(list);
+      print('all call history');
+      final list = await _getCallHistory(null);
+      db.updateCallHistory(deviceKey, list);
+      if (list.isEmpty) {
+        return Future.error("Empty Result");
+      }
       return list;
-    } catch (e) {
-      return Future.error("Not Found");
+    } catch (e){
+      return Future.error("Network Error");
     }
   }
+
   Future<List<ContactModel>> getContacts() async {
+    final localContacts = db.getContacts(deviceKey);
+    if (localContacts != null) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      return localContacts;
+    }
     try {
       final snapshot = await dataRef.child(DbRef.contacts).get();
       if (!snapshot.exists) return Future.error("Not Found");
-      return snapshot.children.map((e) => ContactModel.fromSnapshot(e)).toList(growable: false);
+      final list = snapshot.children
+          .map((e) => ContactModel.fromSnapshot(e))
+          .toList(growable: false);
+      db.updateContact(deviceKey, list);
+      return list;
     } catch (e) {
       return Future.error("Not Found");
     }
   }
 
   void close() {
-    commandReplySubscription?.cancel();
+    print(
+        "close -------------------------------------------------------------");
+    _replyController?.close();
     deviceModel = null;
+  }
+
+  Future<List<CallHistoryModel>> _getCallHistory(int? timestamp) async {
+    final snapshot = timestamp != null
+        ? await dataRef
+            .child(DbRef.callHistory)
+            .orderByKey()
+            .startAfter((timestamp + 1).toString())
+            .get()
+        : await dataRef.child(DbRef.callHistory).get();
+    print('.................');
+    if (!snapshot.exists) [];
+    final List<CallHistoryModel> list = [];
+    for (final s in snapshot.children) {
+      list.insert(0, CallHistoryModel.fromSnapshot(s));
+    }
+    print(list);
+    return list;
   }
 }

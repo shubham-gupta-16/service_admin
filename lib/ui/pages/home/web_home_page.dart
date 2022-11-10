@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:service_admin/api/auth.dart';
-import 'package:service_admin/api/di/locator.dart';
+import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/api/utils.dart';
 import 'package:service_admin/ui/ui_utils.dart';
 
@@ -16,6 +16,7 @@ class WebHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("web build");
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Row(

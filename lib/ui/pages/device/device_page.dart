@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/ui/widgets/stack_page_transition.dart';
-import '../../../api/di/locator.dart';
+import '../../../di/locator.dart';
 import 'device_section.dart';
 
 class DevicePage extends StatefulWidget {
@@ -26,7 +27,6 @@ class _DevicePageState extends State<DevicePage> {
 
   @override
   void dispose() {
-    // _dataConnection.close();
     super.dispose();
   }
 
@@ -60,13 +60,21 @@ class _DevicePageState extends State<DevicePage> {
                 ),
               ),
             ),
-            Padding(
+            Container(
+              color: Theme.of(context).colorScheme.background,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _textEditingController,
+                      textInputAction: TextInputAction.go,
+                      onSubmitted: (s){
+                        _dataConnection
+                            .runCommand(_textEditingController.text.trim());
+                        _textEditingController.clear();
+                      },
+                      style: GoogleFonts.spaceMono(),
                       decoration: InputDecoration(
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 10),

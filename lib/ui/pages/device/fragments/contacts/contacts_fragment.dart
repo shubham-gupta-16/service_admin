@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:service_admin/api/device_data_connection.dart';
-import 'package:service_admin/api/di/locator.dart';
+import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/api/event_log_listener.dart';
 import 'package:service_admin/api/models/contact_model.dart';
 import 'package:service_admin/ui/item_layouts/contact_item_layout.dart';
 import 'package:service_admin/ui/item_layouts/event_item_layout.dart';
 import 'package:service_admin/ui/pages/device/device_section.dart';
+import 'package:service_admin/ui/pages/device/fragments/contacts/provider/contacts_provider.dart';
+import 'package:service_admin/ui/pages/home/providers/screen_mode_provider.dart';
 import 'package:service_admin/ui/widgets/chip_tab_bar.dart';
 import 'package:service_admin/ui/widgets/text_elevated_button.dart';
 
 import '../../../../../api/models/event_model.dart';
 
 class ContactsFragment extends StatefulWidget {
-  const ContactsFragment({Key? key}) : super(key: key);
+  const ContactsFragment._({Key? key}) : super(key: key);
+
+  static Widget providerWrapped() => ChangeNotifierProvider.value(
+    value: ContactsProvider(),
+    child: const ContactsFragment._(),
+  );
 
   @override
   State<ContactsFragment> createState() => _ContactsFragmentState();
@@ -21,18 +29,38 @@ class ContactsFragment extends StatefulWidget {
 
 class _ContactsFragmentState extends State<ContactsFragment> {
   late DeviceDataConnection _dataConnection;
+  late TextEditingController _searchController;
 
   @override
   void initState() {
     _dataConnection = locator();
+    _searchController = TextEditingController();
     super.initState();
+
+    _searchController.addListener(() {
+      context.read<ContactsProvider>().setSearchText(_searchController.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenMode = context.watch<ScreenModeProvider>().mode;
     return Scaffold(
       appBar: AppBar(
-        title: Text(DeviceFragment.contacts.title),
+        titleSpacing: 0,
+        title: screenMode.isSmallOrMedium ? _searchbar() : const Text('Contacts'),
+        actions: screenMode.isExpanded ? [
+          SizedBox(
+            width: 300,
+            child: _searchbar(),
+          )
+        ] : null,
       ),
       body: FutureBuilder(
           future: _dataConnection.getContacts(),
@@ -53,6 +81,25 @@ class _ContactsFragmentState extends State<ContactsFragment> {
           }),
     );
   }
+
+  Widget _searchbar() => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    height: 40,
+    child: TextField(
+      controller: _searchController,
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none),
+          fillColor:
+          Theme.of(context).colorScheme.secondaryContainer,
+          filled: true,
+          hintText: "Search Contacts..."),
+    ),
+  );
 }
 
 class _ContactsListView extends StatelessWidget {
@@ -62,15 +109,17 @@ class _ContactsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ContactsProvider>();
+    final newList = provider.getFilteredList(list);
     return ListView.builder(
       itemBuilder: (context, index) {
-        final eventModel = list[index];
+        final eventModel = newList[index];
         return ContactItemLayout(
           model: eventModel,
           onPressed: () {},
         );
       },
-      itemCount: list.length,
+      itemCount: newList.length,
     );
   }
 }
