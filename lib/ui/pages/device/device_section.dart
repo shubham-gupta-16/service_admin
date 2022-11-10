@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:service_admin/api/device_data_connection.dart';
 import 'package:service_admin/ui/pages/device/fragments/call_history/call_history_fragment.dart';
 import 'package:service_admin/ui/pages/device/fragments/contacts/contacts_fragment.dart';
+import 'package:service_admin/ui/pages/device/fragments/messages/messages_fragment.dart';
 
 import '../../../di/locator.dart';
 import '../../widgets/text_elevated_button.dart';
@@ -34,9 +35,9 @@ extension DeviceFragmentExt on DeviceFragment {
   Widget get widget {
     switch (this) {
       case DeviceFragment.logs:
-        return const EventLogFragment();
+        return EventLogFragment.providerWrapped();
       case DeviceFragment.messages:
-        return const SizedBox();
+        return MessagesFragment.providerWrapped();
       case DeviceFragment.callHistory:
         return CallHistoryFragment.providerWrapped();
       case DeviceFragment.fileExplorer:

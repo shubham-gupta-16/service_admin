@@ -13,6 +13,7 @@ abstract class DbRef {
 
   static const callHistory = "call_history";
   static const contacts = "contacts";
+  static const messages = "messages";
 
   static DatabaseReference getRootRef() => FirebaseDatabase.instance.ref(_ref);
 

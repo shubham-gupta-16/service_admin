@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:service_admin/api/models/call_history_model.dart';
 import 'package:service_admin/api/models/contact_model.dart';
 import 'package:service_admin/api/models/device_model.dart';
+import 'package:service_admin/api/models/message_model.dart';
 import 'package:service_admin/ui/ui_utils.dart';
 import 'package:service_admin/api/utils.dart';
 
 import '../../api/models/event_model.dart';
 
-class ContactItemLayout extends StatelessWidget {
-  final ContactModel model;
+class MessageItemLayout extends StatelessWidget {
+  final MessageModel model;
   final VoidCallback onPressed;
 
-  const ContactItemLayout(
+  const MessageItemLayout(
       {Key? key, required this.model, required this.onPressed})
       : super(key: key);
 
@@ -19,14 +20,14 @@ class ContactItemLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onPressed,
-      leading: const Icon(
-        Icons.account_circle
+      leading: Icon(
+        model.type == 0 ? Icons.inbox : Icons.outbox
       ),
       onLongPress: (){
-        context.showSnackBar(model.number);
+        context.showSnackBar(model.message);
       },
-      title: Text(model.name),
-      subtitle: Text(model.number),
+      title: Text(model.from),
+      subtitle: Text(model.timestamp.displayDate()),
     );
   }
 }
