@@ -30,6 +30,13 @@ class EventLogListener {
     return list;
   }
 
+  void removeLog(int key){
+    if (globalDate != null) {
+      _dataRef.child(DbRef.logs)
+        .child(globalDate!).child(key.toString()).remove();
+    }
+  }
+
   String? globalDate;
   Future<void> setDate(int index, String date) async {
     if (_ss != null) {

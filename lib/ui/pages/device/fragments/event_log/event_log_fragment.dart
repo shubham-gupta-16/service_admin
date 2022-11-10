@@ -73,7 +73,9 @@ class _EventLogFragmentState extends State<EventLogFragment> {
                           snapshot.requireData.isEmpty) {
                         return const SizedBox();
                       }
-                      return _EventListView(list: snapshot.requireData);
+                      return _EventListView(list: snapshot.requireData, onRemove: (int key) {
+                        eventLogListener.removeLog(key);
+                      },);
                     },
                   ),
                 ),
@@ -86,8 +88,9 @@ class _EventLogFragmentState extends State<EventLogFragment> {
 
 class _EventListView extends StatefulWidget {
   final List<EventModel> list;
+  final void Function(int key) onRemove;
 
-  const _EventListView({Key? key, required this.list}) : super(key: key);
+  const _EventListView({Key? key, required this.list, required this.onRemove}) : super(key: key);
 
   @override
   State<_EventListView> createState() => _EventListViewState();
@@ -115,9 +118,18 @@ class _EventListViewState extends State<_EventListView> {
       reverse: true,
       itemBuilder: (context, index) {
         final eventModel = widget.list[index];
-        return EventItemLayout(
-          eventModel: eventModel,
-          onPressed: () {},
+        return Dismissible(
+          key: Key(eventModel.timestampAsKey.toString()),
+          onDismissed: (direction){
+            setState(() {
+              widget.onRemove(eventModel.timestampAsKey);
+              widget.list.remove(eventModel);
+            });
+          },
+          child: EventItemLayout(
+            eventModel: eventModel,
+            onPressed: () {},
+          ),
         );
       },
       itemCount: widget.list.length,

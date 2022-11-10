@@ -3,7 +3,7 @@ import 'package:service_admin/api/all_devices_connection.dart';
 import 'package:service_admin/api/api_constants.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/api/device_data_connection.dart';
-import 'package:service_admin/api/new_device_connetor.dart';
+import 'package:service_admin/api/new_device_connector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final locator = GetIt.instance;

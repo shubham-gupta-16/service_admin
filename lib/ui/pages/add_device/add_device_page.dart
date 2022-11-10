@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
-import 'package:service_admin/api/new_device_connetor.dart';
+import 'package:service_admin/api/new_device_connector.dart';
 import 'package:service_admin/ui/ui_utils.dart';
 import '../../../di/locator.dart';
 
