@@ -29,13 +29,13 @@ class EventItemLayout extends StatelessWidget {
             child: Container(
               width: 5,
               decoration: BoxDecoration(
-                  color: getEventColor(eventModel.event).withOpacity(0.8),
+                  color: EventModel.getEventColor(eventModel.event).withOpacity(0.8),
                   borderRadius: BorderRadius.circular(4)),
             ),
           ),
           Container(
             width: double.infinity,
-            color: getEventColor(eventModel.event).withOpacity(0.03),
+            color: EventModel.getEventColor(eventModel.event).withOpacity(0.03),
             padding:
                 const EdgeInsets.only(right: 20, top: 20, bottom: 20, left: 25),
             child: Text(
@@ -46,7 +46,7 @@ class EventItemLayout extends StatelessWidget {
           Positioned(
             bottom: 0,
             right: 8,
-            child: Text(eventModel.timestampAsKey.displayDate(),
+            child: Text(eventModel.timestampAsKey.toTime(),
                 style: Theme.of(context).textTheme.caption),
           ),
         ],
@@ -54,16 +54,5 @@ class EventItemLayout extends StatelessWidget {
     );
   }
 
-  Color getEventColor(int event) {
-    switch (event) {
-      case 1:
-        return Colors.green;
-      case 8:
-        return Colors.red;
-      case 16:
-        return Colors.blue;
-      default:
-        return Colors.amber;
-    }
-  }
+
 }

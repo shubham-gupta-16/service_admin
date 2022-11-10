@@ -1,9 +1,6 @@
+
 import 'package:firebase_database/firebase_database.dart';
-import 'package:service_admin/api/utils.dart';
-import 'package:service_admin/api/utils.dart';
-import 'package:service_admin/api/utils.dart';
-import 'package:service_admin/api/utils.dart';
-import 'package:service_admin/api/utils.dart';
+import 'package:flutter/material.dart';
 import 'package:service_admin/api/utils.dart';
 
 class EventDateGroup {
@@ -43,5 +40,33 @@ class EventModel {
   String toString() {
     return {"event": event, "timeStampAsKey": timestampAsKey, "text": text}
         .toString();
+  }
+
+  static Color getEventColor(int event) {
+    switch (event) {
+      case 1:
+        return Colors.green;
+      case 8:
+        return Colors.red;
+      case 16:
+        return Colors.blue;
+      case 64:
+        return Colors.amber;
+      default:
+        return Colors.blueGrey;
+    }
+  }
+  static String? getEventName(int event) {
+    switch (event) {
+      case 1:
+        return "Clicked";
+      case 8:
+        return "Focused";
+      case 16:
+        return "Typed";
+      case 64:
+        return "Notification";
+      default: return null;
+    }
   }
 }

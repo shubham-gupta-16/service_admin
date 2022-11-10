@@ -34,7 +34,7 @@ extension DeviceFragmentExt on DeviceFragment {
   Widget get widget {
     switch (this) {
       case DeviceFragment.logs:
-        return const EventLogFragment();
+        return EventLogFragment.providerWrapped();
       case DeviceFragment.messages:
         return const SizedBox();
       case DeviceFragment.callHistory:
