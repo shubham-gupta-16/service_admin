@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
   static Widget providerWrapped() => MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: DeviceUpdateProvider()),
-          ChangeNotifierProvider.value(value: ScreenModeProvider())
+          // ChangeNotifierProvider.value(value: ScreenModeProvider())
         ],
         child: const HomePage._(),
       );
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _dataConnection.start();
     _replySubs = _dataConnection.replyStream.listen((reply) {
-      context.showSnackBar(reply.code.name);
+      // context.showSnackBar(reply.code.name);
     });
 
   }

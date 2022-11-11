@@ -1,12 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:service_admin/api/auth.dart';
 import 'package:service_admin/di/locator.dart';
 import 'package:service_admin/firebase_options.dart';
 import 'package:service_admin/theme/theme.dart';
 import 'package:service_admin/ui/pages/login/auth_page.dart';
 import 'ui/pages/home/home_page.dart';
+import 'ui/pages/home/providers/screen_mode_provider.dart';
 
 void main()  {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,12 +38,17 @@ class MyApp extends StatelessWidget {
         if (future.connectionState != ConnectionState.done){
           return const Center(child: CircularProgressIndicator());
         }
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Service Admin',
-          darkTheme: getTheme(Brightness.dark),
-          theme: getTheme(Brightness.light),
-          home: locator<Auth>().hasCurrentUser ? HomePage.providerWrapped() : const AuthPage(),
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(value: ScreenModeProvider())
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Service Admin',
+            darkTheme: getTheme(Brightness.dark),
+            theme: getTheme(Brightness.light),
+            home: locator<Auth>().hasCurrentUser ? HomePage.providerWrapped() : const AuthPage(),
+          ),
         );
       }
     );
