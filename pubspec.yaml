@@ -39,12 +39,8 @@ dependencies:
   firebase_core: ^1.24.0
   firebase_database: ^9.1.7
   intl: ^0.17.0
-  flex_color_scheme: ^6.0.1
   get_it: ^7.2.0
-  firebase_auth: ^3.11.2
-  url_launcher: ^6.1.6
   provider: ^6.0.4
-  sticky_headers: ^0.3.0+2
   flutter_sticky_header: ^0.6.4
   shared_preferences: ^2.0.15
   pinput: ^2.2.16
