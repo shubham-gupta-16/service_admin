@@ -42,6 +42,7 @@ class DeviceDataConnection {
         .onChildAdded
         .listen((event) {
       if (!event.snapshot.exists) return;
+      print(event.snapshot.value);
       final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
       _replyController?.add(cmdReply);
       event.snapshot.ref.remove();
