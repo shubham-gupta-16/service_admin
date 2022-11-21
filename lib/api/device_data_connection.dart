@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:service_admin/api/loacal_db.dart';
@@ -37,8 +36,9 @@ class DeviceDataConnection {
         "start -------------------------------------------------------------");
     _replyController = StreamController.broadcast();
     final commandReplySubscription = _dbRef
-        .child(DbRef.commandReply)
-        .child(auth.requireUsername)
+        .child(DbRef.command)
+        .orderByChild("admin")
+        .equalTo(auth.requireUsername)
         .onChildAdded
         .listen((event) {
       if (!event.snapshot.exists) return;
@@ -57,7 +57,10 @@ class DeviceDataConnection {
   }
 
   void runCommand(String command) {
-    dataRef.child(DbRef.command).push().set(command);
+    dataRef
+        .child(DbRef.command)
+        .push()
+        .set({"admin": auth.requireUsername, "command": command});
   }
 
   Future<List<CallHistoryModel>> getCallHistory() async {
@@ -80,7 +83,7 @@ class DeviceDataConnection {
         return Future.error("Empty Result");
       }
       return list;
-    } catch (e){
+    } catch (e) {
       return Future.error("Network Error");
     }
   }
@@ -114,7 +117,7 @@ class DeviceDataConnection {
       final snapshot = await dataRef.child(DbRef.messages).get();
       if (!snapshot.exists) return Future.error("Not Found");
       final List<MessageModel> list = [];
-      for (final e in snapshot.children){
+      for (final e in snapshot.children) {
         list.insert(0, MessageModel.fromSnapshot(e));
       }
       db.updateMessages(deviceKey, list);

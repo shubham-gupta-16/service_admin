@@ -19,8 +19,8 @@ class AllDevicesConnection {
 
   void start() {
     _onDeviceAddedController = _deviceRef
-        .orderByChild(DbRef.admin)
-        .equalTo(auth.requireUsername)
+        // .orderByChild(DbRef.admin)
+        // .equalTo(auth.requireUsername)
         .stream<DeviceModel>(
             converter: (snapshot) => DeviceModel.fromSnapshot(snapshot),
             finder: (p1, p2) => p1.deviceKey == p2.deviceKey);

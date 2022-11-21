@@ -16,7 +16,7 @@ class DeviceModel {
 
   factory DeviceModel.fromSnapshot(DataSnapshot snapshot) {
     return DeviceModel(
-      snapshot.key!.split("__")[0],
+      snapshot.key!,
       snapshot.child("name").value as String? ?? "No Name",
       snapshot.child("status").value as int? ?? 0,
       snapshot.child("createdOn").value as int? ?? 0,
