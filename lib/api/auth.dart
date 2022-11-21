@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:service_admin/api/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,7 +49,7 @@ class Auth {
         return AuthCode.success;
       }
       return AuthCode.wrongPassword;
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       return AuthCode.error;
     }
   }
