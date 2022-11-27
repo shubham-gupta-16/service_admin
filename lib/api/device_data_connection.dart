@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:service_admin/api/command_handler.dart';
 import 'package:service_admin/api/loacal_db.dart';
 import 'package:service_admin/api/models/cmd_reply_model.dart';
 import 'package:service_admin/api/models/contact_model.dart';
@@ -15,8 +16,11 @@ class DeviceDataConnection {
   final DatabaseReference _dbRef;
   final Auth auth;
   final db = LocalDb();
+  late final CommandHandler commandHandler;
 
-  DeviceDataConnection(this._dbRef, this.auth);
+  DeviceDataConnection(this._dbRef, this.auth){
+    commandHandler = CommandHandler(_dbRef, auth.requireUsername);
+  }
 
   DeviceModel? deviceModel;
 
@@ -27,30 +31,11 @@ class DeviceDataConnection {
   DatabaseReference get dataRef =>
       DbRef.getDataRef(deviceKey, auth.requireUsername);
 
-  StreamController<CmdReplyModel>? _replyController;
-
-  Stream<CmdReplyModel> get replyStream => _replyController!.stream;
+  Stream<CmdReplyModel> get replyStream => commandHandler.replyStream;
 
   void start() {
-    print(
-        "start -------------------------------------------------------------");
-    _replyController = StreamController.broadcast();
-    final commandReplySubscription = _dbRef
-        .child(DbRef.command)
-        .orderByChild("admin")
-        .equalTo(auth.requireUsername)
-        .onChildAdded
-        .listen((event) {
-      if (!event.snapshot.exists) return;
-      print(event.snapshot.value);
-      final cmdReply = CmdReplyModel.fromSnapshot(event.snapshot);
-      _replyController?.add(cmdReply);
-      event.snapshot.ref.remove();
-      print(cmdReply);
-    });
-    _replyController?.onCancel = () {
-      commandReplySubscription.cancel();
-    };
+    print("start ----------------------------------------------");
+    commandHandler.start();
   }
 
   void setDevice(DeviceModel deviceModel) {
@@ -58,10 +43,13 @@ class DeviceDataConnection {
   }
 
   void runCommand(String command) {
-    dataRef
-        .child(DbRef.command)
-        .push()
-        .set({"admin": auth.requireUsername, "command": command});
+    commandHandler.runCommand(deviceKey, command);
+  }
+
+  void close() {
+    print("close -------------------------------------------------");
+    commandHandler.close();
+    deviceModel = null;
   }
 
   Future<List<CallHistoryModel>> getCallHistory() async {
@@ -126,13 +114,6 @@ class DeviceDataConnection {
     } catch (e) {
       return Future.error("Not Found");
     }
-  }
-
-  void close() {
-    print(
-        "close -------------------------------------------------------------");
-    _replyController?.close();
-    deviceModel = null;
   }
 
   Future<List<CallHistoryModel>> _getCallHistory(int? timestamp) async {
