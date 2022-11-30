@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 
 abstract class DbRef {
-  static const _ref = "v2022";
+  static const _ref = "v2022_11";
   static const devices = "devices";
   static const data = "data";
   static const logs = "logs";
@@ -18,5 +18,5 @@ abstract class DbRef {
   static DatabaseReference getRootRef() => FirebaseDatabase.instance.ref(_ref);
 
   static DatabaseReference getDataRef(String deviceKey, String adminUid) =>
-      getRootRef().child(DbRef.data).child("${deviceKey}__$adminUid");
+      getRootRef().child(DbRef.data).child(deviceKey);
 }

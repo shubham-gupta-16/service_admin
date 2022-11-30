@@ -8,7 +8,7 @@ import 'models/event_model.dart';
 
 class EventLogListener {
   final DatabaseReference _dataRef;
-  final df = DateFormat("dd-MM-yyyy");
+  final df = DateFormat("yyyy-MM-dd");
 
   EventLogListener(this._dataRef);
 
@@ -47,6 +47,9 @@ class EventLogListener {
     globalDate = date;
     list.clear();
     _notify();
+
+    print(date);
+    print(df.format(DateTime.now()));
 
     if (_isToday(date)) {
       _subscribeChildEvent();
